@@ -1,22 +1,22 @@
-import java.util.Random;
+package org.phonebuddy;
 
 import org.andengine.entity.primitive.*;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.region.ITextureRegion;
 
 
     class Tug
     {
-
-        private ITextureRegion ropetex;
+    	private Sprite s_ropetex;
+    	private Sprite s_ropetex2;
+    	
         private Rectangle ropeRec;
         private Vector2 ropePos;
-        private float ropeZ;
+        private int ropeZ;
 
-        private ITextureRegion ropetex2;
         private Rectangle ropeRec2;
         private Vector2 ropePos2;
-        private float rope2Z;
+        private int rope2Z;
 
         private Rectangle startRec;
 
@@ -57,15 +57,22 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
             ropePos = new Vector2((int)((float)Game1.screenWidth * .5), (int)((float)Game1.screenHeight * .6));
             ropePos2 = new Vector2((int)((float)Game1.screenWidth * .5), (int)((float)Game1.screenHeight * .6));
-            rope2Z = .4f;
-            ropeZ = .41f;
+            rope2Z = 40;
+            ropeZ = 41;
 
             speedY = 1.0f;
             speedScale = .01f;
 
 
-
+            s_ropetex = new Sprite(ropePos.x, ropePos.y, Game1.ropeTex, Game1.VBOM);
+            s_ropetex2 = new Sprite(ropePos2.x, ropePos2.y, Game1.ropeTex2, Game1.VBOM);
             
+            s_ropetex.setVisible(false);
+            s_ropetex2.setVisible(false);
+            
+            
+            Game1.mScene.attachChild(s_ropetex);
+            Game1.mScene.attachChild(s_ropetex2);            
 
         }
 
@@ -244,7 +251,10 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
             }
 
-
+            s_ropetex.setPosition(ropePos.x, ropePos.y);
+            s_ropetex2.setPosition(ropePos2.x, ropePos2.y);
+            s_ropetex.setZIndex(ropeZ);
+            s_ropetex2.setZIndex(rope2Z);
            oldMouse = Game1.mouse;
         }
 
@@ -256,14 +266,24 @@ import org.andengine.opengl.texture.region.ITextureRegion;
             
             if (playPos == true && inPlay == false)
             {
-                spriteBatch.Draw(ropetex, ropePos, ropeRec, Color.White, 0.0f, new Vector2(ropeRec.Width / 2, ropeRec.Height / 2), 1.0f, SpriteEffects.None, ropeZ);
-
+                //spriteBatch.Draw(ropetex, ropePos, ropeRec, Color.White, 0.0f, new Vector2(ropeRec.Width / 2, ropeRec.Height / 2), 1.0f, SpriteEffects.None, ropeZ);
+            	s_ropetex.setVisible(true);
+            }
+            else
+            {
+            	
+            	s_ropetex.setVisible(false);
             }
             
             if(inPlay == true)
             {
-                spriteBatch.Draw(ropetex2, ropePos2, ropeRec2, Color.White, 0.0f, new Vector2(ropeRec2.Width / 2, ropeRec2.Height / 2), 1.0f, SpriteEffects.None, rope2Z);
-
+                //spriteBatch.Draw(ropetex2, ropePos2, ropeRec2, Color.White, 0.0f, new Vector2(ropeRec2.Width / 2, ropeRec2.Height / 2), 1.0f, SpriteEffects.None, rope2Z);
+            	s_ropetex2.setVisible(true);
+            }
+            else
+            {
+            	
+            	s_ropetex2.setVisible(false);
             }
         }
     }

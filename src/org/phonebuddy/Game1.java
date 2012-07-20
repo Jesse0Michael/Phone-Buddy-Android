@@ -1,7 +1,14 @@
+package org.phonebuddy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.music.MusicManager;
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
+import org.andengine.audio.sound.SoundManager;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -67,6 +74,27 @@ public class Game1 extends BaseGameActivity {
         public static ITextureRegion soundOn;
         public static ITextureRegion soundOff;
         
+        public static Sound ibark1;
+        public static Sound ibark2;
+        public static Sound ibark3;
+        public static Sound ibark4;
+        public static Sound ibark5;
+        public static Sound ibird1;
+        public static Sound ibird2;
+        public static Sound ibird3;
+        public static Sound ibird4;
+        public static Sound ibird5;
+        public static Sound idrink;
+        public static Sound ifood;
+        public static Music igrowl1;
+        public static Music igrowl2;
+        public static Music igrowl3;
+        public static Music igrowl4;
+        public static Sound ithud;
+        public static Sound ibag;
+        
+        public static SoundManager soundManager;
+        public static MusicManager musicManager;
         
         Rectangle soundRec;
         BitmapTextureAtlas mBitmapTextureAtlas;
@@ -98,17 +126,23 @@ public class Game1 extends BaseGameActivity {
                 public EngineOptions onCreateEngineOptions() {
                         this.mCamera = new Camera(0, 0, screenWidth, screenHeight);
                         final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(screenWidth, screenHeight), mCamera);
+                        engineOptions.getAudioOptions().setNeedsMusic(true);
+                        engineOptions.getAudioOptions().setNeedsSound(true);
                         return engineOptions;
                 }
                
                 @Override
                 public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback)     throws Exception {
-                		
                 	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
                 	VBOM = this.getVertexBufferObjectManager();
+                	soundManager = this.getSoundManager();
+                	musicManager = this.getMusicManager();
+                	
+                	SoundFactory.setAssetBasePath("sfx/");
+                	MusicFactory.setAssetBasePath("sfx/");
                 		
-                		mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 32, 32, TextureOptions.BILINEAR);
-                		field = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "field.png", 0, 0);
+                		mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 2052, 2052);
+                		field = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "field.png",0, 0);
                 		pooBag = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "pooBag.png", 0, 0);
                 		splash = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "phone buddy.png", 0, 0);
                 		dogContainer  = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "dogSheet.png", 0, 0);
@@ -154,16 +188,31 @@ public class Game1 extends BaseGameActivity {
                 		s_soundOn.setZIndex(67);
                 		s_soundOff.setZIndex(67);
                 		
-                		mScene.attachChild(s_field);
-                		mScene.attachChild(s_pooBag);
-                		mScene.attachChild(s_splash);
-                		mScene.attachChild(s_soundOn);
-                		mScene.attachChild(s_soundOff);
                 		
                 		
-                        actionSlider.LoadContent();
-                        dog.LoadContent();
-                        appDJ.LoadContent();
+                		
+                		
+                		ibark1 = SoundFactory.createSoundFromAsset(soundManager, this, "bark1.wav");
+                		ibark2 = SoundFactory.createSoundFromAsset(soundManager, this, "bark2.wav");
+                        ibark3 = SoundFactory.createSoundFromAsset(soundManager, this, "bark3.wav");
+                        ibark4 = SoundFactory.createSoundFromAsset(soundManager, this, "bark4.wav");
+                        ibark5 = SoundFactory.createSoundFromAsset(soundManager, this, "bark5.wav");
+                        ibird1 = SoundFactory.createSoundFromAsset(soundManager, this, "bird1.wav");
+                        ibird2 = SoundFactory.createSoundFromAsset(soundManager, this, "bird2.wav");
+                        ibird3 = SoundFactory.createSoundFromAsset(soundManager, this, "bird3.wav");
+                        ibird4 = SoundFactory.createSoundFromAsset(soundManager, this, "bird4.wav");
+                        ibird5 = SoundFactory.createSoundFromAsset(soundManager, this, "bird5.wav");
+                        idrink = SoundFactory.createSoundFromAsset(soundManager, this, "drink.wav");
+                        ifood = SoundFactory.createSoundFromAsset(soundManager, this, "food.wav");
+                        igrowl1 = MusicFactory.createMusicFromAsset(musicManager, this, "growl1.wav");
+                        igrowl2 = MusicFactory.createMusicFromAsset(musicManager, this, "growl2.wav");
+                        igrowl3 = MusicFactory.createMusicFromAsset(musicManager, this, "growl3.wav");
+                        igrowl4 = MusicFactory.createMusicFromAsset(musicManager, this, "growl4.wav");
+                        ithud = SoundFactory.createSoundFromAsset(soundManager, this, "thud.wav");
+                        ibag = SoundFactory.createSoundFromAsset(soundManager, this, "bag.wav");
+                		
+                		
+                        
                 		
                 		
                 		mBitmapTextureAtlas.load();
@@ -177,12 +226,24 @@ public class Game1 extends BaseGameActivity {
                         
                 		Scene mScene = new Scene();
                        
-                        
+                		
+                		
                         actionSlider = new actionSlider();
 
                         appDJ = new AppDJ();
 
                         dog = new Dog();
+                        
+                        
+                        mScene.attachChild(s_field);
+                		mScene.attachChild(s_pooBag);
+                		mScene.attachChild(s_splash);
+                		mScene.attachChild(s_soundOn);
+                		mScene.attachChild(s_soundOff);
+                		
+                		actionSlider.LoadContent();
+                        dog.LoadContent();
+                        appDJ.LoadContent();
                         
                         
                         soundRec = new Rectangle(screenWidth - 50, 0, 50, 50, VBOM);
@@ -193,18 +254,23 @@ public class Game1 extends BaseGameActivity {
 
                         splashboolean = true;
                         
-                        splashTime = new TimeSpan(5, false){
+                       
+                        
+                        splashTime = new TimeSpan(5, false)
+                        {
                         	@Override
                         	public void onTick()
                         	{
                         		splashboolean = false;
+                        		
                         	}
-                        	
                         };
                         
                         cloudList = new ArrayList<Cloud>();
                         rand = new Random();
-                        newCloud = new TimeSpan((rand.nextInt(7)+5), true){
+                        
+                        newCloud = new TimeSpan((rand.nextInt(7)+5), true)
+                        {
                         	@Override
                         	public void onTick()
                         	{
@@ -281,7 +347,7 @@ public class Game1 extends BaseGameActivity {
                         				                {
                         				                    cloudList.get(i).Update(gameTime);
 
-                        				                    if (cloudList.get(i).cloudPos.x <= -150.0f || cloudList.get(i).cloudPos.x > screenWidth)
+                        				                    if (cloudList.get(i).s_cloud.getX() <= -150.0f || cloudList.get(i).s_cloud.getX() > screenWidth)
                         				                    {
                         				                        cloudList.remove(cloudList.get(i));
 
@@ -301,10 +367,10 @@ public class Game1 extends BaseGameActivity {
 
                         				                    if (holdingPoo == false)
                         				                    {
-                        				                        for (Poo poo : pooList)
-                        				                        {
-                        				                            poo.Update(gameTime);
-                        				                        }
+                        				                    	for (Poo poo : pooList)
+                        				                    	{
+                        				                    		poo.Update(gameTime);
+                        				                    	}
                         				                    }
                         				                    else if (holdingPoo == true)
                         				                    {
@@ -493,8 +559,6 @@ public class Game1 extends BaseGameActivity {
             				
             			}}) ;
                         
-                        
-                        //mScene.onDraw(pGLState, mCamera);
                         
                         
                 }

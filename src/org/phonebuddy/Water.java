@@ -1,34 +1,36 @@
+package org.phonebuddy;
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
-    class Food
+    class Water
     {
         
 
-        ITextureRegion food;
-        public Sprite s_food;
+        ITextureRegion water;
+        public Sprite s_water;
 
 
-        public float foodScale;
-        public float foodRot;
-        public int foodPosZ;
+        public float waterScale;
+        public float waterRot;
+        public int waterPosZ;
         public float xFactor;
         public float yFactor;
 
-        public Rectangle foodRec;
+        public Rectangle waterRec;
 
-        public Vector2 foodPos;
-        public Vector2 eatingPos;
+        public Boolean atWater;
 
-        public boolean atFood;
+        public Vector2 drinkingPos;
+        public Vector2 waterPos;
 
-        public TimeSpan timeEating;
+        public TimeSpan timeDrinking;
 
         public int screenWidth;
         public int screenHeight;
 
-        public Food()
+
+        public Water()
         {
             
             restart();
@@ -37,84 +39,90 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
         public void restart()
         {
-            foodPos = new Vector2((int)((float)screenWidth * .81), (int)((float)screenHeight * .77));
-            eatingPos = new Vector2((int)((float)screenWidth * .78), (int)((float)screenHeight * .69));
-            foodPosZ = 60;
-            foodScale = 1.0f;
-            foodRot = 0.0f;
+
+            waterPos = new Vector2((int)((float)screenWidth * .14), (int)((float)screenHeight * .77));
+            drinkingPos = new Vector2((int)((float)screenWidth * .28), (int)((float)screenHeight * .68));
+            
+            waterPosZ = 60;
+            waterScale = 1.0f;
+            waterRot = 0.0f;
 
             xFactor = 1.0f;
             yFactor = 1.0f;
 
-            atFood = false;
-            //timeEating = new TimeSpan(0, 0, 0, 5, 500);
-            timeEating = new TimeSpan(5, true)
+            atWater = false;
+            //timeDrinking = new TimeSpan(0, 0, 0, 3, 500);
+            timeDrinking = new TimeSpan(3, true)
             {
             	@Override
             	public void onTick()
             	{
-            		Game1.dog.statHunger += 0.3f;
+            		Game1.dog.statThirst += 0.3f;
                     restart();
-                    Game1.appDJ.foodOn = false;
-                    timeEating.reset();
-                    timeEating.pause();
+                    Game1.appDJ.drinkOn = false;
+                    timeDrinking.reset();
+                    timeDrinking.pause();
             		
-            	}
-            	
+            		
+            		
+            	}            	
             	
             };
             
-            s_food = new Sprite(foodPos.x, foodPos.y, Game1.actFood, Game1.VBOM);
-            s_food.setVisible(false);
-            s_food.setZIndex(foodPosZ);
-            Game1.mScene.attachChild(s_food);
-
+            s_water = new Sprite(waterPos.x, waterPos.y, Game1.actWater, Game1.VBOM);
+            s_water.setVisible(false);
+            s_water.setZIndex(waterPosZ);
+            Game1.mScene.attachChild(s_water);
         }
 
         public void LoadContent()
         {
-            //food = Content.Load<ITextureRegion>("Textures/actfood");
+            //water = Content.Load<ITextureRegion>("Textures/actWater");
 
-            foodRec = new Rectangle(0, 0, food.getWidth(), food.getHeight(), Game1.VBOM);
+            waterRec = new Rectangle(0, 0, water.getWidth(), water.getHeight(), Game1.VBOM);
         }
 
 
         public void Update(float gameTime)
         {
-            if (atFood == false)
+            if (atWater == false)
             {
-                if (Game1.dog.statHunger <= 0.9f)
+                if (Game1.dog.statThirst <= 0.9f)
                 {
 
-                    if (Game1.dog.dogPos.y != eatingPos.y || Game1.dog.dogPos.x != eatingPos.x)
+                    if (Game1.dog.dogPos.y != drinkingPos.y || Game1.dog.dogPos.x != drinkingPos.x)
                     {
-                        Game1.dog.myAnimate = Dog.animate.dogRunRight;
+                        Game1.dog.myAnimate = Dog.animate.dogRunLeft;
                         Game1.appDJ.runningOn = true;
-                        if (Game1.dog.dogPos.y >= eatingPos.y - (Game1.dog.returnSpeedY / yFactor) && Game1.dog.dogPos.y <= eatingPos.y + (Game1.dog.returnSpeedY / yFactor))
+                        
+                        if (Game1.dog.dogPos.y >= drinkingPos.y - (Game1.dog.returnSpeedY / yFactor) && Game1.dog.dogPos.y <= drinkingPos.y + (Game1.dog.returnSpeedY / yFactor))
                         {
-                            Game1.dog.dogPos.y = eatingPos.y;
+                            Game1.dog.dogPos.y = drinkingPos.y;
+                            
                         }
-                        else if (Game1.dog.dogPos.y >= eatingPos.y)
+                        else if (Game1.dog.dogPos.y >= drinkingPos.y)
                         {
                             Game1.dog.dogPos.y -= (Game1.dog.returnSpeedY / yFactor);
 
                         }
-                        else if (Game1.dog.dogPos.y <= eatingPos.y)
+                        else if (Game1.dog.dogPos.y <= drinkingPos.y)
                         {
                             Game1.dog.dogPos.y += (Game1.dog.returnSpeedY / yFactor);
 
                         }
 
-                        if (Game1.dog.dogPos.x >= eatingPos.x - (Game1.dog.returnSpeedX / xFactor) && Game1.dog.dogPos.x <= eatingPos.x + (Game1.dog.returnSpeedX / xFactor))
+                        if (Game1.dog.dogPos.x >= drinkingPos.x - (Game1.dog.returnSpeedX / xFactor) && Game1.dog.dogPos.x <= drinkingPos.x + (Game1.dog.returnSpeedX / xFactor))
                         {
-                            Game1.dog.dogPos.x = eatingPos.x;
+                            Game1.dog.dogPos.x = drinkingPos.x;
+                            
 
                         }
-                        else if (Game1.dog.dogPos.x >= eatingPos.x)
+                        else if (Game1.dog.dogPos.x >= drinkingPos.x)
                         {
                             Game1.dog.dogPos.x -= (Game1.dog.returnSpeedX / xFactor);
+                            
                         }
-                        else if (Game1.dog.dogPos.x <= eatingPos.x)
+                        else if (Game1.dog.dogPos.x <= drinkingPos.x)
                         {
                             Game1.dog.dogPos.x += (Game1.dog.returnSpeedX / xFactor);
                             
@@ -126,31 +134,31 @@ import org.andengine.opengl.texture.region.ITextureRegion;
                     }
                     else
                     {
-                    	Game1.appDJ.runningOn = false;
-                        Game1.dog.myAnimate = Dog.animate.dogEatRight;
-                        atFood = true;
-                        timeEating.start();
-                        Game1.appDJ.foodOn = true;
-                        
+                        Game1.dog.myAnimate = Dog.animate.dogEatLeft;
+                        Game1.appDJ.runningOn = false;
+                        atWater = true;
+                        Game1.appDJ.drinkOn = true;
+                        timeDrinking.start();
                     }
-
 
                 }
                 else
                 {
-                    ate();
+
+                    drank();
+
                 }
+
             }
 
         }
 
-        public void ate()
+        public void drank()
         {
             if (Game1.dog.dogPos.y != Game1.dog.origin.y || Game1.dog.dogPos.x != Game1.dog.origin.x || Game1.dog.dogScale < 1.0f)
             {
-                Game1.dog.myAnimate = Dog.animate.dogRunLeft;
-                Game1.appDJ.runningOn = true;
-
+            	Game1.appDJ.runningOn = true;
+                Game1.dog.myAnimate = Dog.animate.dogRunRight;
                 if (Game1.dog.dogPos.y >= Game1.dog.origin.y - (Game1.dog.returnSpeedY / yFactor) && Game1.dog.dogPos.y <= Game1.dog.origin.y + (Game1.dog.returnSpeedY / yFactor))
                 {
                     Game1.dog.dogPos.y = Game1.dog.origin.y;
@@ -176,11 +184,11 @@ import org.andengine.opengl.texture.region.ITextureRegion;
                 else if (Game1.dog.dogPos.x >= Game1.dog.origin.x)
                 {
                     Game1.dog.dogPos.x -= (Game1.dog.returnSpeedX / xFactor);
-                    
                 }
                 else if (Game1.dog.dogPos.x <= Game1.dog.origin.x)
                 {
                     Game1.dog.dogPos.x += (Game1.dog.returnSpeedX / xFactor);
+                    
                 }
 
 
@@ -189,7 +197,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
             else
             {
                 Game1.dog.myAnimate = Dog.animate.dogSitting;
-                Game1.appDJ.runningOn = false;
+                Game1.appDJ.runningOn = false; 
                 restart();
             }
 
@@ -197,8 +205,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
         public void Draw()
         {
-        	
-           // spriteBatch.Draw(food, foodPos, foodRec, Color.White, foodRot, new Vector2(0, 0), foodScale, SpriteEffects.None, foodPosZ);
+            //spriteBatch.Draw(water, waterPos, waterRec, Color.White, waterRot, new Vector2(0, 0), waterScale, SpriteEffects.None, waterPosZ);
 
         }
     }
+

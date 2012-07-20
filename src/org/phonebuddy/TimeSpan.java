@@ -1,3 +1,4 @@
+package org.phonebuddy;
 import org.andengine.engine.handler.IUpdateHandler;
 
 

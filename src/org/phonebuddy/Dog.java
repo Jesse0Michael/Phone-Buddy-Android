@@ -1,4 +1,6 @@
+package org.phonebuddy;
 import org.andengine.entity.primitive.*;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -17,8 +19,9 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         public float statEntertainment;
         public float statHappiness;
 
-        public ITextureRegion dogContainer;
-        public ITextureRegion tugContainer;
+        
+        public Sprite dogContainer;
+        public Sprite tugContainer;
 
         public Rectangle dogRec;
 
@@ -28,7 +31,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         public int returnSpeedY;
 
         public float dogScale;
-        public float dogZ;
+        public int dogZ;
         public float dogRot;
         public float returnSpeedS;
 
@@ -97,7 +100,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
             dogX = (int)((float)Game1.screenWidth * .51);
             dogY = (int)((float)Game1.screenHeight * .54);
-            dogZ = 0.5f;
+            dogZ = 50;
             dogScale = 1.0f;
             dogRec = new Rectangle(0, 0, 200, 200, Game1.VBOM);
             dogRot = 0.0f;
@@ -112,9 +115,13 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
         public void LoadContent()
         {
-
-            //tug container
-        	//dog container
+        	
+            tugContainer =  new Sprite(0, 0, Game1.tugContainer, Game1.VBOM);
+        	dogContainer = new Sprite(0, 0, Game1.dogContainer, Game1.VBOM);
+        	
+        	Game1.mScene.attachChild(tugContainer);
+        	Game1.mScene.attachChild(dogContainer);
+        	
             fetch.LoadContent();
             water.LoadContent();
             food.LoadContent();
@@ -191,7 +198,12 @@ import org.andengine.opengl.texture.region.ITextureRegion;
                 }
             }
 
-
+            dogContainer.setPosition(dogX, dogY);
+            tugContainer.setPosition(dogX, dogY);
+            dogContainer.setZIndex(dogZ);
+            tugContainer.setZIndex(dogZ);
+            dogContainer.setScale(dogScale);
+            tugContainer.setScale(dogScale);
         }
 
         public void Draw()
@@ -305,62 +317,62 @@ import org.andengine.opengl.texture.region.ITextureRegion;
             {
                 case dogSitting:
                     aniY = 0;
-                    spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogRunAway:
                     aniY = 200;
-                    spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogRunTowards:
                     aniY = 400;
-                    spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogRunRight:
                     aniY = 600;
-                    spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogRunLeft:
                     aniY = 600;
-                    spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.FlipHorizontally, dogZ);
+                    //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.FlipHorizontally, dogZ);
                     break;
 
                 case dogEatRight:
                     aniY = 800;
-                    spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogEatLeft:
                     aniY = 1000;
-                    spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTug:
                     aniY = 0;
-                    spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTugRightUp:
                     aniY = 200;
-                    spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTugLeftUp:
                     aniY = 400;
-                    spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTugRightDown:
                     aniY = 600;
-                    spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTugLeftDown:
                     aniY = 800;
-                    spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
+                    //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
             }
         }
@@ -369,8 +381,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         {
         	if (Game1.appDJ.volOn)
             {
-                VibrateController myVibrate = VibrateController.Default;
-                myVibrate.Start(new TimeSpan(0, 0, 0, 0, 100));
+                //VibrateController myVibrate = VibrateController.Default;
+                //myVibrate.Start(new TimeSpan(0, 0, 0, 0, 100));
             }
         }
     }

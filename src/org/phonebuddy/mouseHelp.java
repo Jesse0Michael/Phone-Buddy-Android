@@ -1,4 +1,5 @@
-﻿import org.andengine.entity.primitive.*;
+﻿package org.phonebuddy;
+import org.andengine.entity.primitive.*;
 import org.andengine.input.*;
 import org.andengine.input.touch.TouchEvent;
 

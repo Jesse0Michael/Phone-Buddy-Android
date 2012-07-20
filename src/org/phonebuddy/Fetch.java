@@ -1,4 +1,6 @@
+package org.phonebuddy;
 import org.andengine.entity.primitive.*;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
     class Fetch
@@ -6,6 +8,9 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         
         ITextureRegion ball;
         ITextureRegion shadow;
+        
+        public Sprite s_ball;
+        public Sprite s_shadow;
 
         public int ballPosX;
         public int ballPosY;
@@ -14,7 +19,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         public float Magnitude;
         public float ballScale;
         public float ballRot;
-        public float ballPosZ;
+        public int ballPosZ;
         public float initialVel;
         public float ballStartWidth;
         public float bounceY;
@@ -40,10 +45,10 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         public Vector2 shadowLine;
 
         public TimeSpan reactionTime;
-        public TimeSpan idleTime;
-        public TimeSpan backTime;
-        public TimeSpan releaseTime;
-
+        //public TimeSpan backTime;
+        //public TimeSpan releaseTime;
+        public float backTime;
+        public float releaseTime;
         
 
         public enum ballState
@@ -69,7 +74,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         {
             ballPosX = (int)((float)Game1.screenWidth * .86);
             ballPosY = (int)((float)Game1.screenHeight * .80);
-            ballPosZ = 0.4f;
+            ballPosZ = 40;
             ballScale = 1.0f;
             ballRot = 0.0f;
             initialVel = 0.0f;
@@ -96,12 +101,31 @@ import org.andengine.opengl.texture.region.ITextureRegion;
             linePos = new Vector2(ballPosX, ballPosY);
             dogLine = new Vector2(Game1.dog.dogPos.x, Game1.dog.dogPos.y);
             shadowLine = new Vector2(ballPosX, (int)((float)Game1.screenHeight * .88));
-            reactionTime = new TimeSpan(0, 0, 0, 0, 250);
-            idleTime = new TimeSpan(0, 0, 30);
-            backTime = new TimeSpan(0, 0, 0, 0, 0);
-            releaseTime = new TimeSpan(0, 0, 0, 0, 0);
+            //reactionTime = new TimeSpan(0, 0, 0, 0, 250);
+            //backTime = new TimeSpan(0, 0, 0, 0, 0);
+            //releaseTime = new TimeSpan(0, 0, 0, 0, 0);
             
-
+            reactionTime = new TimeSpan(1, true)
+            {
+            	@Override
+            	public void onTick()
+            	{
+            		waiting();
+            		reactionTime.reset();
+            		reactionTime.pause();
+            		
+            	}           	
+            };
+            
+            s_ball = new Sprite(ballPos.x, ballPos.y, Game1.actFetch, Game1.VBOM);
+            s_ball.setVisible(true);
+            s_ball.setZIndex(ballPosZ);
+            Game1.mScene.attachChild(s_ball);
+            
+            s_shadow = new Sprite(shadowLine.x, shadowLine.y, Game1.shadow, Game1.VBOM);
+            s_shadow.setVisible(true);
+            s_shadow.setZIndex(ballPosZ - 1);
+            Game1.mScene.attachChild(s_shadow);
             
         }
 
@@ -121,7 +145,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         {
             touchRec = new Rectangle((int)ballPos.x - ball.getWidth()/2, (int)ballPos.y-ball.getHeight()/2, ball.getWidth(), ball.getHeight(), Game1.VBOM);
             
-
+            
             switch (state)
             {
                 case ballIdle:
@@ -147,6 +171,13 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
 
             }
+            
+            
+            s_ball.setPosition(ballPos.x, ballPos.y);
+            s_ball.setZIndex(ballPosZ);
+            
+            s_shadow.setPosition(shadowLine.x, shadowLine.y);
+            s_ball.setZIndex(ballPosZ - 1);
 
         }
 
@@ -174,7 +205,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
                 {
                     farthestBack.x = Game1.mouse.getX();
                     farthestBack.y = Game1.mouse.getY();
-                    backTime = gameTime.TotalGameTime;
+                    //backTime = gameTime.TotalGameTime;
+                    backTime = gameTime;
                 }
 
             }
@@ -182,8 +214,9 @@ import org.andengine.opengl.texture.region.ITextureRegion;
             {
                 released.x = Game1.mouse.getX();
                 released.y = Game1.mouse.getY();
-                releaseTime = gameTime.TotalGameTime;
-                initialVel = (float)((Math.sqrt(Math.pow((released.x - farthestBack.x), 2) + Math.pow((released.y - farthestBack.y), 2)))/(releaseTime.TotalMilliseconds - backTime.TotalMilliseconds));
+                //releaseTime = gameTime.TotalGameTime;
+                releaseTime = gameTime;
+                initialVel = (float)((Math.sqrt(Math.pow((released.x - farthestBack.x), 2) + Math.pow((released.y - farthestBack.y), 2)))/(releaseTime - backTime));
                 
                 linePos = new Vector2(ballPos.x, ballPos.y);
                 
@@ -210,15 +243,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
         public void releasing(float gameTime)
         {
-            if (reactionTime >= TimeSpan.Zero)
-            {
-                reactionTime -= gameTime.ElapsedGameTime;
-            }
-            else
-            {
-                waiting();
-
-            }
+        	reactionTime.start();
+            
 
 
             if (bounceCount < 4)
@@ -303,7 +329,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
         public void waiting()
         {
-            ballPosZ = 0.6f;
+            ballPosZ = 61;
 
 
             if (Game1.dog.dogPos.y != linePos.y || Game1.dog.dogPos.x != ballPos.x)
@@ -367,7 +393,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
         public void returning(float gameTime)
         {
-            ballPosZ = 0.4f;
+            ballPosZ = 40;
             if (Game1.dog.dogPos.y != Game1.dog.origin.y || Game1.dog.dogPos.x != Game1.dog.origin.x || Game1.dog.dogScale < 1.0f)
             {
                 Game1.dog.myAnimate = Dog.animate.dogRunTowards;
@@ -438,7 +464,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
         public void Draw()
         {
-            spriteBatch.Draw(ball, ballPos, ballRec, Color.White, ballRot, new Vector2(ball.Width/2, ball.Height/2), ballScale, SpriteEffects.None, ballPosZ);
-            spriteBatch.Draw(shadow, shadowLine, ballRec, Color.White, 0.0f, new Vector2(ball.Width / 2, (ball.Height / 2)), shadowScale, SpriteEffects.None, ballPosZ + .05f);
+            //spriteBatch.Draw(ball, ballPos, ballRec, Color.White, ballRot, new Vector2(ball.Width/2, ball.Height/2), ballScale, SpriteEffects.None, ballPosZ);
+            //spriteBatch.Draw(shadow, shadowLine, ballRec, Color.White, 0.0f, new Vector2(ball.Width / 2, (ball.Height / 2)), shadowScale, SpriteEffects.None, ballPosZ + .05f);
         }
     }
