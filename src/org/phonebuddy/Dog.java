@@ -1,16 +1,10 @@
 package org.phonebuddy;
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.region.ITextureRegion;
 
     class Dog
     {
-        public Fetch fetch;
-        public Water water;
-        public Food food;
-        public Tug tug;
+        
         
 
         public float statHunger;
@@ -79,10 +73,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         public Dog()
         {
 
-            fetch = new Fetch();
-            water = new Water();
-            food = new Food();
-            tug = new Tug();
+            
 
             statThirst = 1.0f;
             statHygiene = 1.0f;
@@ -122,10 +113,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         	Game1.mScene.attachChild(tugContainer);
         	Game1.mScene.attachChild(dogContainer);
         	
-            fetch.LoadContent();
-            water.LoadContent();
-            food.LoadContent();
-            tug.LoadContent();
+            
         }
             
 
@@ -175,19 +163,19 @@ import org.andengine.opengl.texture.region.ITextureRegion;
                 switch (myActivity)
                 {
                     case dogFetch:
-                        fetch.Update(gameTime);
+                        Game1.cfetch.Update(gameTime);
                         break;
 
                     case dogTug:
-                        tug.Update(gameTime);
+                    	Game1.ctug.Update(gameTime);
                         break;
 
                     case dogFood:
-                        food.Update(gameTime);
+                    	Game1.cfood.Update(gameTime);
                         break;
 
                     case dogWater:
-                        water.Update(gameTime);
+                    	Game1.cwater.Update(gameTime);
                         break;
 
                     case dogIdle:
@@ -290,19 +278,19 @@ import org.andengine.opengl.texture.region.ITextureRegion;
                 switch (myActivity)
                 {
                     case dogFetch:
-                        fetch.Draw();
+                    	Game1.cfetch.Draw();
                         break;
 
                     case dogTug:
-                        tug.Draw();
+                    	Game1.ctug.Draw();
                         break;
 
                     case dogFood:
-                        food.Draw();
+                    	Game1.cfood.Draw();
                         break;
 
                     case dogWater:
-                        water.Draw();
+                    	Game1.cwater.Draw();
                         break;
 
                     case dogIdle:

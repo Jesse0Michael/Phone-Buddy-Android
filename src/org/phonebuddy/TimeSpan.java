@@ -1,6 +1,8 @@
 package org.phonebuddy;
 import org.andengine.engine.handler.IUpdateHandler;
 
+import android.util.Log;
+
 
 public class TimeSpan implements IUpdateHandler {
 	
@@ -22,6 +24,7 @@ public class TimeSpan implements IUpdateHandler {
 	@Override
 	public void onUpdate(float pSecondsElapsed)
 	{
+		Log.d("PhoneBuddy", "asasasfaf");
 		this.mSecondsElapsed += pSecondsElapsed;
 		if(this.mSecondsElapsed >= this.mInterval)
 		{
@@ -48,6 +51,7 @@ public class TimeSpan implements IUpdateHandler {
 	
 	public void start()
 	{
+		
 		if(this.mPause)
 		{
 			this.mPause = false;

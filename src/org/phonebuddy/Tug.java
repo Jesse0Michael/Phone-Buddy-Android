@@ -14,7 +14,6 @@ import org.andengine.input.touch.TouchEvent;
         private Vector2 ropePos;
         private int ropeZ;
 
-        private Rectangle ropeRec2;
         private Vector2 ropePos2;
         private int rope2Z;
 
@@ -82,9 +81,7 @@ import org.andengine.input.touch.TouchEvent;
 
             ropeRec = new Rectangle(0, 0,
                                     (int)((float)Game1.screenWidth * .45), (int)((float)Game1.screenHeight * .65), Game1.VBOM);
-            ropeRec2 = new Rectangle(0, 0,
-                                    (int)((float)Game1.screenWidth * .45), (int)((float)Game1.screenHeight * .65), Game1.VBOM);
-
+            
             startRec = new Rectangle((int)ropePos.x - ( ropeRec.getWidth() / 2), (int)ropePos.y - (ropeRec.getHeight() / 2),
                                     (int)((float)Game1.screenWidth * .45), (int)((float)Game1.screenHeight * .65), Game1.VBOM);
 

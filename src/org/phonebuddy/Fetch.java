@@ -1,13 +1,10 @@
 package org.phonebuddy;
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
 
-    class Fetch
+    class Fetch 
     {
         
-        ITextureRegion ball;
-        ITextureRegion shadow;
         
         public Sprite s_ball;
         public Sprite s_shadow;
@@ -100,6 +97,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
             ballPos = new Vector2(ballPosX, ballPosY);
             linePos = new Vector2(ballPosX, ballPosY);
             dogLine = new Vector2(Game1.dog.dogPos.x, Game1.dog.dogPos.y);
+            //dogLine = new Vector2(50,0);
             shadowLine = new Vector2(ballPosX, (int)((float)Game1.screenHeight * .88));
             //reactionTime = new TimeSpan(0, 0, 0, 0, 250);
             //backTime = new TimeSpan(0, 0, 0, 0, 0);
@@ -134,16 +132,16 @@ import org.andengine.opengl.texture.region.ITextureRegion;
             //ball = Content.Load<ITextureRegion>("Textures/actFetch");
             //shadow = Content.Load<ITextureRegion>("Textures/ballShadow");
 
-            ballRec = new Rectangle(0, 0, ball.getWidth(), ball.getHeight(), Game1.VBOM);
-            touchRec = new Rectangle(ballPosX, ballPosY, ball.getWidth(), ball.getHeight(), Game1.VBOM);
-            ballStartWidth = ball.getWidth();
+            ballRec = new Rectangle(0, 0, Game1.actFetch.getWidth(), Game1.actFetch.getHeight(), Game1.VBOM);
+            touchRec = new Rectangle(ballPosX, ballPosY, Game1.actFetch.getWidth(), Game1.actFetch.getHeight(), Game1.VBOM);
+            ballStartWidth = Game1.actFetch.getWidth();
             
         }
 
 
         public void Update(float gameTime)
         {
-            touchRec = new Rectangle((int)ballPos.x - ball.getWidth()/2, (int)ballPos.y-ball.getHeight()/2, ball.getWidth(), ball.getHeight(), Game1.VBOM);
+            touchRec = new Rectangle((int)ballPos.x - Game1.actFetch.getWidth()/2, (int)ballPos.y-Game1.actFetch.getHeight()/2, Game1.actFetch.getWidth(), Game1.actFetch.getHeight(), Game1.VBOM);
             
             
             switch (state)

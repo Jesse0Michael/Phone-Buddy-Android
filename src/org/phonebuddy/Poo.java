@@ -3,12 +3,10 @@ import java.util.Random;
 
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
  
 	class Poo
     {
 
-        ITextureRegion pooImage;
         public Sprite s_pooImage;
 
         public Vector2 pooPos;
@@ -29,8 +27,6 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
         public Boolean grabbedPoo;
 
-        public int screenWidth;
-        public int screenHeight;
         
 
         public Poo(int pooNumber)
@@ -43,7 +39,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
             randX = new Random();
             randY = new Random();
 
-            pooPos = new Vector2((float)(randX.nextInt((int)((float)screenWidth * .83)) + .07), (float)(randY.nextInt((int)((float)screenHeight * .59)) + .35));
+            pooPos = new Vector2((float)(randX.nextInt((int)((float)Game1.screenWidth * .9)) + (int)(Game1.screenHeight * .07)), (float)(randY.nextInt((int)((float)Game1.screenHeight * .59)) + (int)(Game1.screenHeight * .35)));
             pooStart = pooPos;
 
             pooScale = pooPos.y / 500.0f;
@@ -51,8 +47,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
             //pooImage = Content.Load<ITextureRegion>("Textures/actPoo" + pooNumber);
 
-            pooRec = new Rectangle(0, 0, pooImage.getWidth(), pooImage.getHeight(), Game1.VBOM);
-            bagRec = new Rectangle((int)((float)screenWidth * .80), (int)((float)screenHeight * .75), pooImage.getWidth() + (int)((float)screenWidth * .80), pooImage.getHeight() + (int)((float)screenWidth * .75), Game1.VBOM);
+            pooRec = new Rectangle(0, 0, Game1.pooImage1.getWidth(), Game1.pooImage1.getHeight(), Game1.VBOM);
+            bagRec = new Rectangle((int)((float)Game1.screenWidth * .80), (int)((float)Game1.screenHeight * .75), Game1.pooImage1.getWidth() + (int)((float)Game1.screenWidth * .80), Game1.pooImage1.getHeight() + (int)((float)Game1.screenWidth * .75), Game1.VBOM);
         
            
             
@@ -75,7 +71,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 
         public void Update(float gameTime)
         {
-            touchRec = new Rectangle((int)pooPos.x - pooImage.getWidth() / 2, (int)pooPos.y - pooImage.getHeight() / 2, pooImage.getWidth(), pooImage.getHeight(), Game1.VBOM);
+            touchRec = new Rectangle((int)pooPos.x - Game1.pooImage1.getWidth() / 2, (int)pooPos.y - Game1.pooImage1.getHeight() / 2, Game1.pooImage1.getWidth(), Game1.pooImage1.getHeight(), Game1.VBOM);
             
 
             if (Game1.mouse.isActionDown() && touchRec.contains((int)Game1.mouse.getX(), (int)Game1.mouse.getY()))

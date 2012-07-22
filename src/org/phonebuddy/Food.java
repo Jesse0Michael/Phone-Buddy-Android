@@ -1,13 +1,11 @@
 package org.phonebuddy;
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
 
     class Food
     {
         
 
-        ITextureRegion food;
         public Sprite s_food;
 
 
@@ -76,7 +74,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         {
             //food = Content.Load<ITextureRegion>("Textures/actfood");
 
-            foodRec = new Rectangle(0, 0, food.getWidth(), food.getHeight(), Game1.VBOM);
+            foodRec = new Rectangle(0, 0, Game1.actFood.getWidth(), Game1.actFood.getHeight(), Game1.VBOM);
         }
 
 

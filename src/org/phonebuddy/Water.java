@@ -1,13 +1,11 @@
 package org.phonebuddy;
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
 
     class Water
     {
         
 
-        ITextureRegion water;
         public Sprite s_water;
 
 
@@ -79,7 +77,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
         {
             //water = Content.Load<ITextureRegion>("Textures/actWater");
 
-            waterRec = new Rectangle(0, 0, water.getWidth(), water.getHeight(), Game1.VBOM);
+            waterRec = new Rectangle(0, 0, Game1.actWater.getWidth(), Game1.actWater.getHeight(), Game1.VBOM);
         }
 
 

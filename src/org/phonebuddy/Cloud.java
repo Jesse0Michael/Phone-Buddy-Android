@@ -3,9 +3,8 @@ import java.util.Random;
 
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.ITextureRegion;
 
-    class Cloud extends Game1
+    class Cloud 
     {
 
 
@@ -40,23 +39,23 @@ import org.andengine.opengl.texture.region.ITextureRegion;
             switch(cloudNumber)
             {
             case 1:
-            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage1, VBOM);
+            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage1, Game1.VBOM);
             	break;
             	
             case 2:
-            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage2, VBOM);
+            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage2, Game1.VBOM);
             	break;
             	
             case 3:
-            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage3, VBOM);
+            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage3, Game1.VBOM);
             	break;
             	
             case 4:
-            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage4, VBOM);
+            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage4, Game1.VBOM);
             	break;
             	
             case 5:
-            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage5, VBOM);
+            	s_cloud = new Sprite(pos.x, pos.y, Game1.cloudImage5, Game1.VBOM);
             	break;
             	
             	

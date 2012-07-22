@@ -1,5 +1,4 @@
 package org.phonebuddy;
-import org.andengine.input.touch.*;
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
 
@@ -155,8 +154,8 @@ import org.andengine.entity.sprite.Sprite;
         public void Draw()
         {
 
-        	s_slider.setPosition(recSlider);
-            s_sliderPull.setPosition(recSliderPull);
+        	s_slider.setPosition(recSlider.getX(), recSlider.getY());
+            s_sliderPull.setPosition(recSliderPull.getX(), recSliderPull.getY());
             s_actFetch.setPosition(recFetch);
             s_actTug.setPosition(recTug);
             s_actFood.setPosition(recFood);
