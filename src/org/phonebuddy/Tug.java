@@ -7,15 +7,14 @@ import org.andengine.input.touch.TouchEvent;
 
     class Tug
     {
-    	private Sprite s_ropetex;
-    	private Sprite s_ropetex2;
+    	public Sprite s_ropetex;
+    	public Sprite s_ropetex2;
     	
-        private Rectangle ropeRec;
-        private Vector2 ropePos;
+        public Vector2 ropePos;
         private int ropeZ;
 
-        private Vector2 ropePos2;
-        private int rope2Z;
+        public Vector2 ropePos2;
+        public int rope2Z;
 
         private Rectangle startRec;
 
@@ -25,67 +24,60 @@ import org.andengine.input.touch.TouchEvent;
         private float speedY;
 
 
-        private boolean playPos;
-        private boolean inPlay;
+        public boolean playPos;
+        public boolean inPlay;
 
 
-        public TouchEvent oldMouse;
+        public Vector2 oldMouse;
 
 
         public Tug()
         {
-
+        	
+        	
+        	
+            
             restart();
-
-        }
-
-        public void restart()
-        {
-            Game1.dog.tugboolean = true;
-            Game1.dog.myAnimate = Dog.animate.dogSitting;
             
-
-            playPos = false;
-            inPlay = false;
-
-            oldMouse = Game1.mouse;
-
-            
-            playScale = 3.0f;
-            playPlace = new Vector2((int)((float)Game1.screenWidth * .51), (int)((float)Game1.screenHeight * .62));
-
-            ropePos = new Vector2((int)((float)Game1.screenWidth * .5), (int)((float)Game1.screenHeight * .6));
-            ropePos2 = new Vector2((int)((float)Game1.screenWidth * .5), (int)((float)Game1.screenHeight * .6));
-            rope2Z = 40;
-            ropeZ = 41;
-
-            speedY = 1.0f;
-            speedScale = .01f;
-
-
             s_ropetex = new Sprite(ropePos.x, ropePos.y, Game1.ropeTex, Game1.VBOM);
             s_ropetex2 = new Sprite(ropePos2.x, ropePos2.y, Game1.ropeTex2, Game1.VBOM);
             
             s_ropetex.setVisible(false);
             s_ropetex2.setVisible(false);
             
-            
             Game1.mScene.attachChild(s_ropetex);
-            Game1.mScene.attachChild(s_ropetex2);            
+            Game1.mScene.attachChild(s_ropetex2);  
 
         }
 
-        public void LoadContent()
+        public void restart()
         {
+           
+            Game1.dog.myAnimate = Dog.animate.dogSitting;
             
 
-            ropeRec = new Rectangle(0, 0,
-                                    (int)((float)Game1.screenWidth * .45), (int)((float)Game1.screenHeight * .65), Game1.VBOM);
+            playPos = false;
+            inPlay = false;
+
+            oldMouse = new Vector2( Game1.screenWidth / 2, Game1.screenHeight / 2);
+
             
-            startRec = new Rectangle((int)ropePos.x - ( ropeRec.getWidth() / 2), (int)ropePos.y - (ropeRec.getHeight() / 2),
-                                    (int)((float)Game1.screenWidth * .45), (int)((float)Game1.screenHeight * .65), Game1.VBOM);
+            playScale = 3.0f;
+            playPlace = new Vector2((int)((float)Game1.screenWidth * .51), (int)((float)Game1.screenHeight * .62));
+
+            ropePos = new Vector2((int)((float)Game1.screenWidth * .5), (int)((float)Game1.screenHeight * .6));
+            ropePos2 = new Vector2((int)((float)Game1.screenWidth * .5 ), (int)((float)Game1.screenHeight * .6));
+            rope2Z = -40;
+            ropeZ = -41;
+
+            startRec = new Rectangle((int)ropePos.x - (Game1.ropeTex.getWidth() / 2), (int)ropePos.y - (Game1.ropeTex.getHeight() / 2), Game1.ropeTex.getWidth(), Game1.ropeTex.getHeight() , Game1.VBOM);
+
+            
+            speedY = 1.0f;
+            speedScale = .01f;
 
 
+                      
 
         }
 
@@ -100,6 +92,7 @@ import org.andengine.input.touch.TouchEvent;
 
                 if (Game1.dog.dogPos.y != playPlace.y || Game1.dog.dogScale != playScale)
                 {
+                	Game1.dog.tugboolean = true;
                 	Game1.appDJ.runningOn = true;
                     Game1.dog.myAnimate = Dog.animate.dogRunTowards;
                     if (Game1.dog.dogPos.y <= playPlace.y + speedY && Game1.dog.dogPos.y >= playPlace.y - speedY)
@@ -151,7 +144,7 @@ import org.andengine.input.touch.TouchEvent;
                         {
 
                             Game1.dog.myAnimate = Dog.animate.dogTugLeftUp;
-                            if (oldMouse.getY() > ((float)Game1.screenHeight * .45))
+                            if (oldMouse.y > ((float)Game1.screenHeight * .45))
                             {
                                 Game1.dog.vibrate();
                                 Game1.appDJ.playGrowl();
@@ -161,14 +154,14 @@ import org.andengine.input.touch.TouchEvent;
                         {
                             Game1.dog.myAnimate = Dog.animate.dogTugLeftDown;
 
-                            if (oldMouse.getY() <= ((float)Game1.screenHeight * .45))
+                            if (oldMouse.y <= ((float)Game1.screenHeight * .45))
                             {
                                 Game1.dog.vibrate();
                                 Game1.appDJ.playGrowl();
                             }
                         }
 
-                        if (oldMouse.getX() > ((float)Game1.screenWidth * .33))
+                        if (oldMouse.x > ((float)Game1.screenWidth * .33))
                         {
                             Game1.dog.vibrate();
                             Game1.appDJ.playGrowl();
@@ -182,7 +175,7 @@ import org.andengine.input.touch.TouchEvent;
 
                             Game1.dog.myAnimate = Dog.animate.dogTugRightUp;
 
-                            if (oldMouse.getY() > ((float)Game1.screenHeight * .45))
+                            if (oldMouse.y > ((float)Game1.screenHeight * .45))
                             {
                                 Game1.dog.vibrate();
                                 Game1.appDJ.playGrowl();
@@ -192,14 +185,14 @@ import org.andengine.input.touch.TouchEvent;
                         {
                             Game1.dog.myAnimate = Dog.animate.dogTugRightDown;
 
-                            if (oldMouse.getY() <= ((float)Game1.screenHeight * .45))
+                            if (oldMouse.y <= ((float)Game1.screenHeight * .45))
                             {
                                 Game1.dog.vibrate();
                                 Game1.appDJ.playGrowl();
                             }
                         }
 
-                        if (oldMouse.getX() < ((float)Game1.screenWidth * .66))
+                        if (oldMouse.x < ((float)Game1.screenWidth * .66))
                         {
                             Game1.dog.vibrate();
                             Game1.appDJ.playGrowl();
@@ -209,13 +202,13 @@ import org.andengine.input.touch.TouchEvent;
                     else
                     {
                         Game1.dog.myAnimate = Dog.animate.dogTug;
-                        if (oldMouse.getX() > ((float)Game1.screenWidth * .66))
+                        if (oldMouse.x > ((float)Game1.screenWidth * .66))
                         {
                             Game1.dog.vibrate();
                             Game1.appDJ.playGrowl();
                         }
 
-                        if (oldMouse.getX() < ((float)Game1.screenWidth * .33))
+                        if (oldMouse.x < ((float)Game1.screenWidth * .33))
                         {
                             Game1.dog.vibrate();
                             Game1.appDJ.playGrowl();
@@ -223,19 +216,21 @@ import org.andengine.input.touch.TouchEvent;
 
                     }
 
-                    if (Game1.mouse.isActionDown())
+                    if (Game1.mouse.isActionUp())
                     {
                         restart();
+                        
                     }
 
 
-                    ropePos2 = new Vector2(Game1.mouse.getX(), Game1.mouse.getY());
+                    ropePos2.x = Game1.mouse.getX();
+                    ropePos2.y = Game1.mouse.getY();
 
                 }
                 else
                 {
                     Game1.dog.myAnimate = Dog.animate.dogSitting;
-                    if (Game1.mouse.isActionDown() && startRec.contains((int)Game1.mouse.getX(), (int)Game1.mouse.getY()))
+                    if ((Game1.mouse.isActionDown() || Game1.mouse.isActionMove()) && startRec.contains((int)Game1.mouse.getX(), (int)Game1.mouse.getY()))
                     {
 
                         inPlay = true;
@@ -248,39 +243,11 @@ import org.andengine.input.touch.TouchEvent;
 
             }
 
-            s_ropetex.setPosition(ropePos.x, ropePos.y);
-            s_ropetex2.setPosition(ropePos2.x, ropePos2.y);
+            s_ropetex.setPosition(ropePos.x - (Game1.ropeTex.getWidth() / 2), ropePos.y - (Game1.ropeTex.getHeight() / 2));
+            s_ropetex2.setPosition(ropePos2.x - (Game1.ropeTex2.getWidth() / 2), ropePos2.y - (Game1.ropeTex2.getHeight() / 2));
             s_ropetex.setZIndex(ropeZ);
             s_ropetex2.setZIndex(rope2Z);
-           oldMouse = Game1.mouse;
-        }
-
-        
-
-        public void Draw()
-        {
-
-            
-            if (playPos == true && inPlay == false)
-            {
-                //spriteBatch.Draw(ropetex, ropePos, ropeRec, Color.White, 0.0f, new Vector2(ropeRec.Width / 2, ropeRec.Height / 2), 1.0f, SpriteEffects.None, ropeZ);
-            	s_ropetex.setVisible(true);
-            }
-            else
-            {
-            	
-            	s_ropetex.setVisible(false);
-            }
-            
-            if(inPlay == true)
-            {
-                //spriteBatch.Draw(ropetex2, ropePos2, ropeRec2, Color.White, 0.0f, new Vector2(ropeRec2.Width / 2, ropeRec2.Height / 2), 1.0f, SpriteEffects.None, rope2Z);
-            	s_ropetex2.setVisible(true);
-            }
-            else
-            {
-            	
-            	s_ropetex2.setVisible(false);
-            }
+            oldMouse.x = Game1.mouse.getX();
+            oldMouse.y = Game1.mouse.getY();
         }
     }

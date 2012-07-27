@@ -2,6 +2,8 @@ package org.phonebuddy;
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
 
+import android.util.Log;
+
 
 	class actionSlider
     {
@@ -49,33 +51,39 @@ import org.andengine.entity.sprite.Sprite;
             s_actWater = new Sprite(0, 0, Game1.actWater, Game1.VBOM);
             s_actPoo = new Sprite(0, 0, Game1.actPoo, Game1.VBOM);
             
-            s_slider.setZIndex(20);
-            s_sliderPull.setZIndex(19);
-            s_actFetch.setZIndex(18);
-            s_actTug.setZIndex(17);
-            s_actFood.setZIndex(16);
-            s_actWater.setZIndex(15);
-            s_actPoo.setZIndex(14);
-        }
-
-        public void LoadContent()
-        {
-
-            //slider = Content.Load<ITextureRegion>("Textures/slider");
-            //sliderPull = Content.Load<ITextureRegion>("Textures/sliderPull");
-            //actFetch = Content.Load<ITextureRegion>("Textures/actFetch");
-            //actTug = Content.Load<ITextureRegion>("Textures/actTug");
-            //actFood = Content.Load<ITextureRegion>("Textures/actFood");
-            //actWater = Content.Load<ITextureRegion>("Textures/actWater");
-            //actPoo = Content.Load<ITextureRegion>("Textures/actPoo");
+            s_slider.setZIndex(-20);
+            s_sliderPull.setZIndex(-19);
+            s_actFetch.setZIndex(-18);
+            s_actTug.setZIndex(-17);
+            s_actFood.setZIndex(-16);
+            s_actWater.setZIndex(-15);
+            s_actPoo.setZIndex(-14);
             
+            
+            Game1.mScene.attachChild(s_slider);
+            Game1.mScene.attachChild(s_sliderPull);
+            Game1.mScene.attachChild(s_actFetch);
+            Game1.mScene.attachChild(s_actTug);
+            Game1.mScene.attachChild(s_actFood);
+            Game1.mScene.attachChild(s_actWater);
+            Game1.mScene.attachChild(s_actPoo);
+            
+            this.recSlider = new Rectangle(sliderXloc, 0, s_slider.getWidth(), s_slider.getHeight(), Game1.VBOM);
+            this.recSliderPull = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .22), (int)((float)Game1.screenHeight * .36), s_sliderPull.getWidth(), s_sliderPull.getHeight(), Game1.VBOM);
+            this.recFetch = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .04), s_actFetch.getWidth(), s_actFetch.getHeight(), Game1.VBOM);
+            this.recTug = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .24), s_actTug.getWidth(), s_actTug.getHeight(), Game1.VBOM);
+            this.recFood = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .43), s_actFood.getWidth(), s_actFood.getHeight(), Game1.VBOM);
+            this.recWater = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .62), s_actWater.getWidth(), s_actWater.getHeight(), Game1.VBOM);
+            this.recPoo = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .09), (int)((float)Game1.screenHeight * .77), s_actPoo.getWidth(), s_actPoo.getHeight(), Game1.VBOM);
 
+            
         }
+
+       
 
         public void Update(float gameTime)
         {
-        	
-            if (Game1.mouse.isActionUp() && recSliderPull.contains((int)Game1.mouse.getX(), (int)Game1.mouse.getY()) && pullerClicked == false)
+        	if ((Game1.mouse.isActionDown() || Game1.mouse.isActionMove()) && recSliderPull.contains((int)Game1.mouse.getX(), (int)Game1.mouse.getY()) && pullerClicked == false)
             {
                 pullerClicked = true;
                 sliderGap = (int)(Game1.mouse.getX() - (s_slider.getWidth() + sliderXloc));
@@ -149,30 +157,14 @@ import org.andengine.entity.sprite.Sprite;
             this.recWater = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .62), s_actWater.getWidth(), s_actWater.getHeight(), Game1.VBOM);
             this.recPoo = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .09), (int)((float)Game1.screenHeight * .77), s_actPoo.getWidth(), s_actPoo.getHeight(), Game1.VBOM);
 
-        }
- 
-        public void Draw()
-        {
-
-        	s_slider.setPosition(recSlider.getX(), recSlider.getY());
-            s_sliderPull.setPosition(recSliderPull.getX(), recSliderPull.getY());
+            
+            
+            s_slider.setPosition(recSlider);
+            s_sliderPull.setPosition(recSliderPull);
             s_actFetch.setPosition(recFetch);
             s_actTug.setPosition(recTug);
             s_actFood.setPosition(recFood);
             s_actWater.setPosition(recWater);
             s_actPoo.setPosition(recPoo);
-
-            
-            //spriteBatch.Draw(slider, recSlider, new Rectangle(0, 0, slider.getWidth(), slider.getHeight()), Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, .2f);
-            //spriteBatch.Draw(sliderPull, recSliderPull, new Rectangle(0, 0, sliderPull.getWidth(), sliderPull.getHeight()), Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, .19f);
-            //spriteBatch.Draw(actFetch, recFetch, new Rectangle(0, 0, actFetch.getWidth(), actFetch.getHeight()), Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, .18f);
-            //spriteBatch.Draw(actTug, recTug, new Rectangle(0, 0, actTug.getWidth(), actTug.getHeight()), Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, .17f);
-            //spriteBatch.Draw(actFood, recFood, new Rectangle(0, 0, actFood.getWidth(), actFood.getHeight()), Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, .16f);
-            //spriteBatch.Draw(actWater, recWater, new Rectangle(0, 0, actWater.getWidth(), actWater.getHeight()), Color.White, 0.0f, new Vector2(0,0), SpriteEffects.None, .15f);
-            //spriteBatch.Draw(actPoo, recPoo, new Rectangle(0, 0, actPoo.getWidth(), actPoo.getHeight()), Color.White, 0.0f, new Vector2(0,0), SpriteEffects.None, .13f);
-            
-
-
-
         }
     }

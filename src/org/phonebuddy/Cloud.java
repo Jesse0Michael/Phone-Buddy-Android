@@ -63,7 +63,7 @@ import org.andengine.entity.sprite.Sprite;
             
             
             s_cloud.setVisible(true);
-            s_cloud.setZIndex(70);
+            s_cloud.setZIndex(-70 - (int)Math.abs(move));
             s_cloud.setScale(cloudScale);
             Game1.mScene.attachChild(s_cloud);
             
@@ -75,10 +75,5 @@ import org.andengine.entity.sprite.Sprite;
             s_cloud.setPosition(s_cloud.getX() + move, s_cloud.getY());
         }
 
-        public void Draw()
-        {
-           //spriteBatch.Draw(cloudImage, cloudPos, cloudRec, Color.White, 0.0f, Vector2.Zero, cloudScale, SpriteEffects.None, cloudZ);
-
-        }
     }
 

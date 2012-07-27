@@ -1,6 +1,8 @@
 package org.phonebuddy;
 import java.util.Random;
 
+import android.util.Log;
+
 
 
 
@@ -34,6 +36,8 @@ import java.util.Random;
             	@Override
             	public void onTick()
             	{
+            		if(volOn)
+            		{
             		
             		int bark = rand.nextInt(5) + 1;
                     switch (bark)
@@ -59,25 +63,20 @@ import java.util.Random;
                             break;
 
                     }
+            		}
 
                     barkSpan.setInterval(rand.nextInt(5) + 2);
                     barkSpan.reset();
                 
             		
-            		
             	}
             };
             
-        }
-
-        public void LoadContent()
-        {
-
+            Game1.timers.add(barkSpan);
             
-
             Game1.ifood.setLooping(true);
             Game1.idrink.setLooping(true);
-
+            
         }
 
         
@@ -85,7 +84,7 @@ import java.util.Random;
         {
             if (volOn)
             {
-                if (runningOn)
+            	if (runningOn)
                 {
                     barkSpan.start();
                     
@@ -96,26 +95,40 @@ import java.util.Random;
                 	barkSpan.pause();
                 	
                 }
-
-                if (foodOn)
+            	//Log.d("PhoneBuddy", "" + Game1.ifood.isPlaying());
+                
+                if (foodOn == true)
                 {
+                	
                     
-                	Game1.ifood.play();
-
+                	if(!Game1.ifood.isPlaying())
+                    {
+                    	
+                    	Game1.ifood.play();
+                    
+                    }
                 }
                 else
                 {
-                	Game1.ifood.stop();
+                	if(Game1.ifood.isPlaying())
+                    {
+                		Game1.ifood.pause();
+                    }
                 }
 
                 if (drinkOn)
                 {
-                    
-                	Game1.idrink.play();
+                    if(!Game1.idrink.isPlaying())
+                    {
+                    	Game1.idrink.play();
+                    }
                 }
                 else
                 {
-                	Game1.idrink.stop();
+                	if(Game1.idrink.isPlaying())
+                    {
+                		Game1.idrink.pause();
+                    }
                 }
             }
 
@@ -174,7 +187,7 @@ import java.util.Random;
             {
                 if (growlplaying() == false)
                 {
-                    int growl = rand.nextInt(6) + 1;
+                    int growl = rand.nextInt(4) + 1;
 
                     switch (growl)
                     {
@@ -194,11 +207,6 @@ import java.util.Random;
                         	Game1.igrowl4.play();
                             break;
 
-                        case 5:
-                            break;
-
-                        case 6:
-                            break;
                     }
                 }
             }
@@ -255,12 +263,32 @@ import java.util.Random;
         	Game1.ibird3.stop();
         	Game1.ibird4.stop();
         	Game1.ibird5.stop();
-        	Game1.idrink.stop();
-        	Game1.ifood.stop();
-        	Game1.igrowl1.stop();
-        	Game1.igrowl2.stop();
-        	Game1.igrowl3.stop();
-        	Game1.igrowl4.stop();
+        	
+        	if(Game1.idrink.isPlaying())
+        	{
+        		Game1.idrink.pause();
+        	}
+        	if(Game1.ifood.isPlaying())
+        	{
+        		Game1.ifood.pause();
+        	}
+        	if(Game1.igrowl1.isPlaying())
+        	{
+        		Game1.igrowl1.pause();
+        	}
+        	if(Game1.igrowl2.isPlaying())
+        	{
+        		Game1.igrowl2.pause();
+        	}
+        	if(Game1.igrowl3.isPlaying())
+        	{
+        		Game1.igrowl3.pause();
+        	}
+        	if(Game1.igrowl4.isPlaying())
+        	{
+        		Game1.igrowl4.pause();
+        	}
+        	
         	Game1.ithud.stop();
         	Game1.ibag.stop();
 

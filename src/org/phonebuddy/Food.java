@@ -24,30 +24,10 @@ import org.andengine.entity.sprite.Sprite;
 
         public TimeSpan timeEating;
 
-        public int screenWidth;
-        public int screenHeight;
 
         public Food()
         {
-            
-            restart();
-
-        }
-
-        public void restart()
-        {
-            foodPos = new Vector2((int)((float)screenWidth * .81), (int)((float)screenHeight * .77));
-            eatingPos = new Vector2((int)((float)screenWidth * .78), (int)((float)screenHeight * .69));
-            foodPosZ = 60;
-            foodScale = 1.0f;
-            foodRot = 0.0f;
-
-            xFactor = 1.0f;
-            yFactor = 1.0f;
-
-            atFood = false;
-            //timeEating = new TimeSpan(0, 0, 0, 5, 500);
-            timeEating = new TimeSpan(5, true)
+        	timeEating = new TimeSpan(5.5f, true)
             {
             	@Override
             	public void onTick()
@@ -63,18 +43,38 @@ import org.andengine.entity.sprite.Sprite;
             	
             };
             
+            Game1.timers.add(timeEating);
+            
+            restart();
             s_food = new Sprite(foodPos.x, foodPos.y, Game1.actFood, Game1.VBOM);
             s_food.setVisible(false);
             s_food.setZIndex(foodPosZ);
             Game1.mScene.attachChild(s_food);
+            
 
         }
 
-        public void LoadContent()
+        public void restart()
         {
-            //food = Content.Load<ITextureRegion>("Textures/actfood");
-
+            foodPos = new Vector2((int)((float)Game1.screenWidth * .81), (int)((float)Game1.screenHeight * .77));
+            eatingPos = new Vector2((int)((float)Game1.screenWidth * .78), (int)((float)Game1.screenHeight * .69));
+            
             foodRec = new Rectangle(0, 0, Game1.actFood.getWidth(), Game1.actFood.getHeight(), Game1.VBOM);
+            
+            foodPosZ = -60;
+            foodScale = 1.0f;
+            foodRot = 0.0f;
+
+            xFactor = 1.0f;
+            yFactor = 1.0f;
+
+            atFood = false;
+            //timeEating = new TimeSpan(0, 0, 0, 5, 500);
+            
+            
+            timeEating.setInterval(5.5f);
+            timeEating.pause();
+
         }
 
 
@@ -191,13 +191,6 @@ import org.andengine.entity.sprite.Sprite;
                 Game1.appDJ.runningOn = false;
                 restart();
             }
-
-        }
-
-        public void Draw()
-        {
-        	
-           // spriteBatch.Draw(food, foodPos, foodRec, Color.White, foodRot, new Vector2(0, 0), foodScale, SpriteEffects.None, foodPosZ);
 
         }
     }

@@ -2,6 +2,8 @@ package org.phonebuddy;
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
 
+import android.util.Log;
+
     class Fetch 
     {
         
@@ -42,10 +44,8 @@ import org.andengine.entity.sprite.Sprite;
         public Vector2 shadowLine;
 
         public TimeSpan reactionTime;
-        //public TimeSpan backTime;
-        //public TimeSpan releaseTime;
         public float backTime;
-        public float releaseTime;
+        public boolean goDogGo;
         
 
         public enum ballState
@@ -62,16 +62,54 @@ import org.andengine.entity.sprite.Sprite;
         
         public Fetch()
         {
-
+        	reactionTime = new TimeSpan(.25f, true)
+            {
+            	@Override
+            	public void onTick()
+            	{
+            		if(state != Fetch.ballState.ballReturning)
+            		{
+            			goDogGo = true;
+            		}
+            		reactionTime.reset();
+            		reactionTime.pause();
+            		
+            	}           	
+            };
+            
+            ballPosX = (int)((float)Game1.screenWidth * .83);
+            ballPosY = (int)((float)Game1.screenHeight * .73);
+            ballPosZ = -40;
+            ballScale = 1.0f;
+            ballPos = new Vector2(ballPosX, ballPosY);
+            
+            shadowLine = new Vector2(ballPosX, (int)((float)Game1.screenHeight * .81));
+            
+            
+            s_ball = new Sprite(ballPos.x - 40, ballPos.y - 39, Game1.actFetch, Game1.VBOM);
+            s_ball.setVisible(false);
+            s_ball.setZIndex(ballPosZ);
+            Game1.mScene.attachChild(s_ball);
+            
+            s_shadow = new Sprite(shadowLine.x - 40, shadowLine.y - 39, Game1.shadow, Game1.VBOM);
+            s_shadow.setVisible(false);
+            s_shadow.setZIndex(ballPosZ - 1);
+            Game1.mScene.attachChild(s_shadow);
+            
             restart();
+           
+            
+            
+            
+            Game1.timers.add(reactionTime); 
             
         }
 
         public void restart()
         {
-            ballPosX = (int)((float)Game1.screenWidth * .86);
-            ballPosY = (int)((float)Game1.screenHeight * .80);
-            ballPosZ = 40;
+            ballPosX = (int)((float)Game1.screenWidth * .83);
+            ballPosY = (int)((float)Game1.screenHeight * .73);
+            ballPosZ = -40;
             ballScale = 1.0f;
             ballRot = 0.0f;
             initialVel = 0.0f;
@@ -79,6 +117,8 @@ import org.andengine.entity.sprite.Sprite;
             Magnitude = 250.0f;
             bounceY = 0.0f;
             bounceSpeed = 0.0f;
+            
+            goDogGo = false;
 
             shadowScale = 1.0f;
             xFactor = 1.0f;
@@ -90,58 +130,38 @@ import org.andengine.entity.sprite.Sprite;
 
             state = ballState.ballIdle;
 
-            vanishingPoint = new Vector2((int)((float)Game1.screenWidth * .55), (int)((float)Game1.screenHeight * .23));
+            vanishingPoint = new Vector2((int)((float)Game1.screenWidth * .55), (int)((float)Game1.screenHeight * .26));
             farthestBack = new Vector2(0, 0);
             released = new Vector2(0, 0);
             ballOrigin = new Vector2(ballPosX, ballPosY);
             ballPos = new Vector2(ballPosX, ballPosY);
             linePos = new Vector2(ballPosX, ballPosY);
             dogLine = new Vector2(Game1.dog.dogPos.x, Game1.dog.dogPos.y);
-            //dogLine = new Vector2(50,0);
-            shadowLine = new Vector2(ballPosX, (int)((float)Game1.screenHeight * .88));
-            //reactionTime = new TimeSpan(0, 0, 0, 0, 250);
-            //backTime = new TimeSpan(0, 0, 0, 0, 0);
-            //releaseTime = new TimeSpan(0, 0, 0, 0, 0);
+            backTime = 1;
+            shadowLine = new Vector2(ballPosX, (int)((float)Game1.screenHeight * .81));
             
-            reactionTime = new TimeSpan(1, true)
-            {
-            	@Override
-            	public void onTick()
-            	{
-            		waiting();
-            		reactionTime.reset();
-            		reactionTime.pause();
-            		
-            	}           	
-            };
             
-            s_ball = new Sprite(ballPos.x, ballPos.y, Game1.actFetch, Game1.VBOM);
-            s_ball.setVisible(true);
-            s_ball.setZIndex(ballPosZ);
-            Game1.mScene.attachChild(s_ball);
-            
-            s_shadow = new Sprite(shadowLine.x, shadowLine.y, Game1.shadow, Game1.VBOM);
-            s_shadow.setVisible(true);
-            s_shadow.setZIndex(ballPosZ - 1);
-            Game1.mScene.attachChild(s_shadow);
-            
-        }
-
-        public void LoadContent()
-        {
-            //ball = Content.Load<ITextureRegion>("Textures/actFetch");
-            //shadow = Content.Load<ITextureRegion>("Textures/ballShadow");
-
             ballRec = new Rectangle(0, 0, Game1.actFetch.getWidth(), Game1.actFetch.getHeight(), Game1.VBOM);
-            touchRec = new Rectangle(ballPosX, ballPosY, Game1.actFetch.getWidth(), Game1.actFetch.getHeight(), Game1.VBOM);
+            touchRec = new Rectangle(ballPosX - 40, ballPosY - 39, Game1.actFetch.getWidth(), Game1.actFetch.getHeight(), Game1.VBOM);
             ballStartWidth = Game1.actFetch.getWidth();
             
+                       
+            reactionTime.setInterval(.25f);
+            reactionTime.pause();
+            
+            s_ball.setPosition(ballPos.x - 40, ballPos.y - 39);
+            s_ball.setZIndex(ballPosZ);
+            s_ball.setScale(ballScale);
+            
+            s_shadow.setPosition(shadowLine.x - 40, shadowLine.y - 39);
+            s_shadow.setZIndex(ballPosZ - 1);
+            s_shadow.setScale(shadowScale);
         }
 
 
         public void Update(float gameTime)
         {
-            touchRec = new Rectangle((int)ballPos.x - Game1.actFetch.getWidth()/2, (int)ballPos.y-Game1.actFetch.getHeight()/2, Game1.actFetch.getWidth(), Game1.actFetch.getHeight(), Game1.VBOM);
+        	touchRec = new Rectangle(ballPosX - 40, ballPosY - 39, Game1.actFetch.getWidth(), Game1.actFetch.getHeight(), Game1.VBOM);
             
             
             switch (state)
@@ -153,7 +173,6 @@ import org.andengine.entity.sprite.Sprite;
 
                 case ballHolding:
                     holding(gameTime);
-
                     break;
 
                 case ballReleased:
@@ -170,21 +189,28 @@ import org.andengine.entity.sprite.Sprite;
 
             }
             
+            if(goDogGo)
+            {
+            	waiting();
+            }
             
-            s_ball.setPosition(ballPos.x, ballPos.y);
+            s_ball.setPosition(ballPos.x - 40, ballPos.y - 39);
             s_ball.setZIndex(ballPosZ);
+            s_ball.setScale(ballScale);
             
-            s_shadow.setPosition(shadowLine.x, shadowLine.y);
-            s_ball.setZIndex(ballPosZ - 1);
+            s_shadow.setPosition(shadowLine.x - 40, shadowLine.y - 39);
+            s_shadow.setZIndex(ballPosZ - 1);
+            s_shadow.setScale(shadowScale);
 
         }
 
         public void idleing(float gameTime)
         {
 
-            if (Game1.mouse.isActionDown() && touchRec.contains(Game1.mouse.getX(), Game1.mouse.getY()))
+            if (Game1.mouse.isActionDown()  && touchRec.contains(Game1.mouse.getX(), Game1.mouse.getY()))
             {
                 state = ballState.ballHolding;
+                
 
             }
 
@@ -193,18 +219,18 @@ import org.andengine.entity.sprite.Sprite;
         public void holding(float gameTime)
         {
             
-            if (Game1.mouse.isActionDown())
+            if (Game1.mouse.isActionDown() || Game1.mouse.isActionMove())
             {
-                ballPos.x = (int)Game1.mouse.getX();
-                ballPos.y = (int)Game1.mouse.getY();
-
+                ballPos.x = (int)Game1.mouse.getX() - (Game1.actFetch.getWidth() / 2) + 40;
+                ballPos.y = (int)Game1.mouse.getY() - (Game1.actFetch.getHeight() / 2) + 39;
+                
+                backTime += gameTime;
 
                 if (Game1.mouse.getY() >= farthestBack.y)
                 {
                     farthestBack.x = Game1.mouse.getX();
                     farthestBack.y = Game1.mouse.getY();
-                    //backTime = gameTime.TotalGameTime;
-                    backTime = gameTime;
+                    backTime = 0;
                 }
 
             }
@@ -212,24 +238,29 @@ import org.andengine.entity.sprite.Sprite;
             {
                 released.x = Game1.mouse.getX();
                 released.y = Game1.mouse.getY();
-                //releaseTime = gameTime.TotalGameTime;
-                releaseTime = gameTime;
-                initialVel = (float)((Math.sqrt(Math.pow((released.x - farthestBack.x), 2) + Math.pow((released.y - farthestBack.y), 2)))/(releaseTime - backTime));
-                
+                initialVel = (float)((Math.sqrt(Math.pow((released.x - farthestBack.x), 2) + Math.pow((released.y - farthestBack.y), 2)))/(backTime));
+                Log.d("PhoneBuddy", ""+ initialVel);
                 linePos = new Vector2(ballPos.x, ballPos.y);
                 
-                if (initialVel <= 0.45f)
+                if (initialVel <= 100.0f || backTime == 0)
                 {
 
-
+                	s_ball.setPosition(ballPosX - 40, ballPosY - 39);
+                    s_ball.setZIndex(ballPosZ);
+                    s_ball.setScale(ballScale);
+                    
+                    s_shadow.setPosition(ballPosX - 40, (int)((float)Game1.screenHeight * .81) - 39);
+                    s_shadow.setZIndex(ballPosZ - 1);
+                    s_shadow.setScale(shadowScale);
+                    state = ballState.ballIdle;
                     restart();
                 }
-                else if(initialVel <= 1.0f)
+                else if(initialVel <= 1000f && initialVel > 100)
                 {
                     initialVel = 1.0f;
                     state = ballState.ballReleased;
                 }
-                else if (initialVel >= 1.5f)
+                else if (initialVel > 1000f)
                 {
                     initialVel = 1.5f;
                 
@@ -327,10 +358,10 @@ import org.andengine.entity.sprite.Sprite;
 
         public void waiting()
         {
-            ballPosZ = 61;
+            ballPosZ = -61;
 
 
-            if (Game1.dog.dogPos.y != linePos.y || Game1.dog.dogPos.x != ballPos.x)
+            if (Game1.dog.dogPos.y != linePos.y   || Game1.dog.dogPos.x != ballPos.x )
             {
                 Game1.dog.myAnimate = Dog.animate.dogRunAway;
                 Game1.appDJ.runningOn = true;
@@ -383,6 +414,7 @@ import org.andengine.entity.sprite.Sprite;
                 shadowLine.y = -100;
                 state = ballState.ballReturning;
                 Game1.appDJ.runningOn = false;
+                goDogGo = false;
             }
 
 
@@ -391,7 +423,7 @@ import org.andengine.entity.sprite.Sprite;
 
         public void returning(float gameTime)
         {
-            ballPosZ = 40;
+            ballPosZ = -40;
             if (Game1.dog.dogPos.y != Game1.dog.origin.y || Game1.dog.dogPos.x != Game1.dog.origin.x || Game1.dog.dogScale < 1.0f)
             {
                 Game1.dog.myAnimate = Dog.animate.dogRunTowards;
@@ -460,9 +492,4 @@ import org.andengine.entity.sprite.Sprite;
 
         }
 
-        public void Draw()
-        {
-            //spriteBatch.Draw(ball, ballPos, ballRec, Color.White, ballRot, new Vector2(ball.Width/2, ball.Height/2), ballScale, SpriteEffects.None, ballPosZ);
-            //spriteBatch.Draw(shadow, shadowLine, ballRec, Color.White, 0.0f, new Vector2(ball.Width / 2, (ball.Height / 2)), shadowScale, SpriteEffects.None, ballPosZ + .05f);
-        }
     }

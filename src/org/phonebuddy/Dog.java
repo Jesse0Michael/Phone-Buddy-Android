@@ -1,6 +1,11 @@
 package org.phonebuddy;
 import org.andengine.entity.primitive.*;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.sprite.TiledSprite;
+
+import android.content.Context;
+import android.os.Vibrator;
+import android.util.Log;
 
     class Dog
     {
@@ -14,8 +19,8 @@ import org.andengine.entity.sprite.Sprite;
         public float statHappiness;
 
         
-        public Sprite dogContainer;
-        public Sprite tugContainer;
+        public TiledSprite dogContainer;
+        public TiledSprite tugContainer;
 
         public Rectangle dogRec;
 
@@ -69,11 +74,27 @@ import org.andengine.entity.sprite.Sprite;
         public int aniX;
         public int aniY;
         public boolean tugboolean;
+        
+        public TimeSpan vibrateDelay;
 
         public Dog()
         {
 
+        	vibrateDelay = new TimeSpan(.1f, true)
+            {
+            	@Override
+            	public void onTick()
+            	{
+            		Game1.myVibrate.vibrate(100);
+            		vibrateDelay.reset();
+            		vibrateDelay.setInterval(.1f);
+            		vibrateDelay.pause();
+            		
+            	}
+            	
+            };
             
+            Game1.timers.add(vibrateDelay);
 
             statThirst = 1.0f;
             statHygiene = 1.0f;
@@ -91,7 +112,7 @@ import org.andengine.entity.sprite.Sprite;
 
             dogX = (int)((float)Game1.screenWidth * .51);
             dogY = (int)((float)Game1.screenHeight * .54);
-            dogZ = 50;
+            dogZ = -50;
             dogScale = 1.0f;
             dogRec = new Rectangle(0, 0, 200, 200, Game1.VBOM);
             dogRot = 0.0f;
@@ -101,33 +122,29 @@ import org.andengine.entity.sprite.Sprite;
             returnSpeedY = 1;
             returnSpeedS = .005f;
             
-
-        }
-
-        public void LoadContent()
-        {
-        	
-            tugContainer =  new Sprite(0, 0, Game1.tugContainer, Game1.VBOM);
-        	dogContainer = new Sprite(0, 0, Game1.dogContainer, Game1.VBOM);
+            
+            tugContainer =  new TiledSprite(0, 0, 200, 200, Game1.tugContainer, Game1.VBOM);
+        	dogContainer = new TiledSprite(0, 0, 200, 200, Game1.dogContainer, Game1.VBOM);
         	
         	Game1.mScene.attachChild(tugContainer);
         	Game1.mScene.attachChild(dogContainer);
-        	
-            
+
         }
             
 
         public void Update(float gameTime)
         {
+        	
+        	
             // This part of the dog update method controls the frames per second for the animation
             myFPS++;
             dogRec = new Rectangle(aniX, aniY, 200, 200, Game1.VBOM);
             if (myFPS >= FPS)
             {
                 myFPS = 0;
-                if (aniX < 600)
+                if (aniX < 3)
                 {
-                    aniX += 200;
+                    aniX ++;
                 }
                 else
                 {
@@ -186,16 +203,8 @@ import org.andengine.entity.sprite.Sprite;
                 }
             }
 
-            dogContainer.setPosition(dogX, dogY);
-            tugContainer.setPosition(dogX, dogY);
-            dogContainer.setZIndex(dogZ);
-            tugContainer.setZIndex(dogZ);
-            dogContainer.setScale(dogScale);
-            tugContainer.setScale(dogScale);
-        }
-
-        public void Draw()
-        {
+            
+        
             if (tugboolean == true)
             {
                 returnSpeedS = .1f;
@@ -204,6 +213,7 @@ import org.andengine.entity.sprite.Sprite;
             {
                 returnSpeedS = .005f;
             }
+            
             // This will have the dog return to the start position if called.
             if (returnHome == true)
             {
@@ -272,32 +282,92 @@ import org.andengine.entity.sprite.Sprite;
                     tugboolean = false;
                 }
             }
+            
+            
+            
+            
+            
+            // This will draw the proper objects depending on what activity is running
+        	if(myActivity == Dog.activity.dogIdle)
+            {
+        		myAnimate = Dog.animate.dogSitting;
+            	
+            }
+        	
+        	if(myActivity == Dog.activity.dogFetch)
+            {
+            	Game1.cfetch.s_ball.setVisible(true);
+            	Game1.cfetch.s_shadow.setVisible(true);
+            	
+            	
+            }
             else
             {
-                // This will draw the proper objects depending on what activity is running
-                switch (myActivity)
+            	Game1.cfetch.s_ball.setVisible(false);
+            	Game1.cfetch.s_shadow.setVisible(false);
+            	
+            	
+            }
+            
+            if(myActivity == Dog.activity.dogTug)
+            {
+            	if (Game1.ctug.playPos == true && Game1.ctug.inPlay == false)
                 {
-                    case dogFetch:
-                    	Game1.cfetch.Draw();
-                        break;
-
-                    case dogTug:
-                    	Game1.ctug.Draw();
-                        break;
-
-                    case dogFood:
-                    	Game1.cfood.Draw();
-                        break;
-
-                    case dogWater:
-                    	Game1.cwater.Draw();
-                        break;
-
-                    case dogIdle:
-                        myAnimate = Dog.animate.dogSitting;
-                        break;
-
+                    Game1.ctug.s_ropetex.setVisible(true);
                 }
+                else
+                {
+                	
+                	Game1.ctug.s_ropetex.setVisible(false);
+                }
+                
+                if(Game1.ctug.inPlay == true)
+                {
+                    Game1.ctug.s_ropetex2.setVisible(true);
+                }
+                else
+                {
+                	Game1.ctug.s_ropetex2.setVisible(false);
+                	Game1.ctug.ropePos = new Vector2((int)((float)Game1.screenWidth * .5), (int)((float)Game1.screenHeight * .6));
+                	Game1.ctug.ropePos2 = new Vector2((int)((float)Game1.screenWidth * .5 ), (int)((float)Game1.screenHeight * .6));
+                    Game1.ctug.s_ropetex.setPosition(Game1.ctug.ropePos.x - (Game1.ropeTex.getWidth() / 2), Game1.ctug.ropePos.y - (Game1.ropeTex.getHeight() / 2));
+                    Game1.ctug.s_ropetex2.setPosition(Game1.ctug.ropePos2.x - (Game1.ropeTex2.getWidth() / 2), Game1.ctug.ropePos2.y - (Game1.ropeTex2.getHeight() / 2));
+                    
+                	
+                }
+            }
+            else
+            {
+            	Game1.ctug.s_ropetex2.setVisible(false);
+            	Game1.ctug.s_ropetex.setVisible(false);
+            }
+        	
+            
+            if(myActivity == Dog.activity.dogFood)
+            {
+            	Game1.cfood.s_food.setVisible(true);
+            	
+            	
+            }
+            else
+            {
+            	Game1.cfood.s_food.setVisible(false);
+            	
+            	
+            }
+            
+            
+            if(myActivity == Dog.activity.dogWater)
+            {
+            	Game1.cwater.s_water.setVisible(true);
+            	
+            	
+            }
+            else
+            {
+            	Game1.cwater.s_water.setVisible(false);
+            	
+            	
             }
 
             // This draws the dog depending on what animation should be shown on the sprite sheet currently
@@ -305,64 +375,119 @@ import org.andengine.entity.sprite.Sprite;
             {
                 case dogSitting:
                     aniY = 0;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(true);
+                    tugContainer.setVisible(false);
+                    dogContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogRunAway:
-                    aniY = 200;
+                    aniY = 4;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(true);
+                    tugContainer.setVisible(false);
+                    dogContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogRunTowards:
-                    aniY = 400;
+                    aniY = 8;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(true);
+                    tugContainer.setVisible(false);
+                    dogContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogRunRight:
-                    aniY = 600;
+                    aniY = 12;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(true);
+                    tugContainer.setVisible(false);
+                    dogContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogRunLeft:
-                    aniY = 600;
+                    aniY = 12;
+                    dogContainer.setFlippedHorizontal(true);
+                    dogContainer.setVisible(true);
+                    tugContainer.setVisible(false);
+                    dogContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.FlipHorizontally, dogZ);
                     break;
 
                 case dogEatRight:
-                    aniY = 800;
+                    aniY = 16;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(true);
+                    tugContainer.setVisible(false);
+                    dogContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogEatLeft:
-                    aniY = 1000;
+                    aniY = 20;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(true);
+                    tugContainer.setVisible(false);
+                    dogContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(dogContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTug:
                     aniY = 0;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(false);
+                    tugContainer.setVisible(true);
+                    tugContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTugRightUp:
-                    aniY = 200;
+                    aniY = 4;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(false);
+                    tugContainer.setVisible(true);
+                    tugContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTugLeftUp:
-                    aniY = 400;
+                    aniY = 8;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(false);
+                    tugContainer.setVisible(true);
+                    tugContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTugRightDown:
-                    aniY = 600;
+                    aniY = 12;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(false);
+                    tugContainer.setVisible(true);
+                    tugContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
 
                 case dogTugLeftDown:
-                    aniY = 800;
+                    aniY = 16;
+                    dogContainer.setFlippedHorizontal(false);
+                    dogContainer.setVisible(false);
+                    tugContainer.setVisible(true);
+                    tugContainer.setCurrentTileIndex(aniX + aniY);
                     //spriteBatch.Draw(tugContainer, dogPos, dogRec, Color.White, dogRot, new Vector2(100, 100), dogScale, SpriteEffects.None, dogZ);
                     break;
             }
+            
+            dogContainer.setPosition(dogPos.x - 100, dogPos.y - 100);
+            tugContainer.setPosition(dogPos.x - 100, dogPos.y - 100);
+            dogContainer.setZIndex(dogZ);
+            tugContainer.setZIndex(dogZ);
+            dogContainer.setScale(dogScale);
+            tugContainer.setScale(dogScale);
         }
 
         public void vibrate()
@@ -371,6 +496,9 @@ import org.andengine.entity.sprite.Sprite;
             {
                 //VibrateController myVibrate = VibrateController.Default;
                 //myVibrate.Start(new TimeSpan(0, 0, 0, 0, 100));
+        		vibrateDelay.start();
+
+        		
             }
         }
     }

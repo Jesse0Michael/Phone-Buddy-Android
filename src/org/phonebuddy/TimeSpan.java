@@ -4,7 +4,7 @@ import org.andengine.engine.handler.IUpdateHandler;
 import android.util.Log;
 
 
-public class TimeSpan implements IUpdateHandler {
+public class TimeSpan {
 	
 	private float mInterval;
 	private float mSecondsElapsed;
@@ -21,22 +21,23 @@ public class TimeSpan implements IUpdateHandler {
 		this.mInterval = pInterval;
 	}
 	
-	@Override
+	
 	public void onUpdate(float pSecondsElapsed)
 	{
-		Log.d("PhoneBuddy", "asasasfaf");
-		this.mSecondsElapsed += pSecondsElapsed;
-		if(this.mSecondsElapsed >= this.mInterval)
+		//Log.d("PhoneBuddy", "" + pSecondsElapsed);
+		if(!this.mPause)
 		{
-			if(!this.mPause)
+			this.mSecondsElapsed += pSecondsElapsed;
+			if(this.mSecondsElapsed >= this.mInterval)
 			{
-				this.mSecondsElapsed -= this.mInterval;
+			
+				this.mSecondsElapsed = 0;
 				onTick();
+			
 			}
 		}
 	}
 	
-	@Override
 	public void reset()
 	{
 		this.mSecondsElapsed = 0;

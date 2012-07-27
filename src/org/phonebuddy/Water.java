@@ -24,33 +24,11 @@ import org.andengine.entity.sprite.Sprite;
 
         public TimeSpan timeDrinking;
 
-        public int screenWidth;
-        public int screenHeight;
 
 
         public Water()
         {
-            
-            restart();
-
-        }
-
-        public void restart()
-        {
-
-            waterPos = new Vector2((int)((float)screenWidth * .14), (int)((float)screenHeight * .77));
-            drinkingPos = new Vector2((int)((float)screenWidth * .28), (int)((float)screenHeight * .68));
-            
-            waterPosZ = 60;
-            waterScale = 1.0f;
-            waterRot = 0.0f;
-
-            xFactor = 1.0f;
-            yFactor = 1.0f;
-
-            atWater = false;
-            //timeDrinking = new TimeSpan(0, 0, 0, 3, 500);
-            timeDrinking = new TimeSpan(3, true)
+        	timeDrinking = new TimeSpan(3.5f, true)
             {
             	@Override
             	public void onTick()
@@ -67,17 +45,43 @@ import org.andengine.entity.sprite.Sprite;
             	
             };
             
+            Game1.timers.add(timeDrinking);
+        	
+            restart();
+            
             s_water = new Sprite(waterPos.x, waterPos.y, Game1.actWater, Game1.VBOM);
             s_water.setVisible(false);
             s_water.setZIndex(waterPosZ);
             Game1.mScene.attachChild(s_water);
+            
+            
+
         }
 
-        public void LoadContent()
+        public void restart()
         {
-            //water = Content.Load<ITextureRegion>("Textures/actWater");
 
+            waterPos = new Vector2((int)((float)Game1.screenWidth * .14), (int)((float)Game1.screenHeight * .77));
+            drinkingPos = new Vector2((int)((float)Game1.screenWidth * .28), (int)((float)Game1.screenHeight * .68));
             waterRec = new Rectangle(0, 0, Game1.actWater.getWidth(), Game1.actWater.getHeight(), Game1.VBOM);
+            
+            waterPosZ = -60;
+            waterScale = 1.0f;
+            waterRot = 0.0f;
+
+            xFactor = 1.0f;
+            yFactor = 1.0f;
+
+            atWater = false;
+            //timeDrinking = new TimeSpan(0, 0, 0, 3, 500);
+            timeDrinking.setInterval(3.5f);
+            timeDrinking.pause();
+            
+        }
+        
+        public void loadContent()
+        {
+        	
         }
 
 
@@ -198,12 +202,6 @@ import org.andengine.entity.sprite.Sprite;
                 Game1.appDJ.runningOn = false; 
                 restart();
             }
-
-        }
-
-        public void Draw()
-        {
-            //spriteBatch.Draw(water, waterPos, waterRec, Color.White, waterRot, new Vector2(0, 0), waterScale, SpriteEffects.None, waterPosZ);
 
         }
     }
