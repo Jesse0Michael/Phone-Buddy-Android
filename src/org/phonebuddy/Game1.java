@@ -165,39 +165,44 @@ public class Game1 extends SimpleBaseGameActivity implements IOnSceneTouchListen
                 	SoundFactory.setAssetBasePath("sfx/");
                 	MusicFactory.setAssetBasePath("sfx/");
                 	
-                		mBitmapTextureAtlasActivites= new BitmapTextureAtlas(this.getTextureManager(), 1028, 2052, TextureOptions.BILINEAR);
-                		mBitmapTextureAtlasDogSheet= new BitmapTextureAtlas(this.getTextureManager(), 1028, 2052, TextureOptions.BILINEAR);
-                		mBitmapTextureAtlasTugSheet= new BitmapTextureAtlas(this.getTextureManager(), 1028, 2052, TextureOptions.BILINEAR);
-                		mBitmapTextureAtlasWalls= new BitmapTextureAtlas(this.getTextureManager(), 1028, 2052, TextureOptions.BILINEAR);
-                		mBitmapTextureAtlasUI= new BitmapTextureAtlas(this.getTextureManager(), 1028, 2052, TextureOptions.BILINEAR);
-                		
-                		
-                		pooBag = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "pooBag.png", 0, 0); 			//100 x 102
-                        slider = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "slider.png", 0, 150); 		//179 x 480 
-                        sliderPull = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "sliderPull.png", 0, 650); //42  x 123
-                        actFetch = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actFetch.png", 0, 800); 	//82  x 84
-                        actTug = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actTug.png", 0, 900); 		//86  x 67
-                        actFood = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actFood.png", 0, 1000); 		//86  x 54
-                        actWater = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actWater.png", 0, 1100); 	//86  x 50
-                        actPoo = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actPoo.png", 0, 1200); 		//53  x 88
-                        ropeTex = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "rope60.png", 0, 1300); 		//360 x 312
-                        ropeTex2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "rope.png", 0, 1650); 		//360 x 312
-                        cloudImage1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud1.png", 0, 0); 			//139 x 78
-                        cloudImage2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud2.png", 0, 100); 			//123 x 78
-                        cloudImage3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud3.png", 0, 200); 			//135 x 86
-                        cloudImage4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud4.png", 0, 300); 			//138 x 74
-                        cloudImage5 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud5.png", 0, 400); 			//152 x 100
-                        pooImage1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "actPoo1.png", 0, 550); 			//50  x 51
-                        pooImage2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "actPoo2.png", 0, 650); 			//50  x 51
-                        soundOn = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "soundOn.png", 0, 750); 				//50  x 50
-                        soundOff = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "soundOff.png", 0, 850); 			//50  x 50
-                        shadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "ballShadow.png", 0, 950); 			//82  x 84
-                		splash = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasWalls, this, "phone buddy.png", 0, 0); 			//800 x 480
-                		field = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasWalls, this, "field.png", 0, 485); 				//800 x 480
-                		dogContainer  = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlasDogSheet, this, "dogSheet.png", 0, 0, 4, 6); 	//800 x 1200
-                        tugContainer  = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlasTugSheet, this, "tugSheet.png", 0, 0, 4, 5);	//800 x 1000
-                        
-                        
+                	mBitmapTextureAtlasActivites= new BitmapTextureAtlas(this.getTextureManager(), 1024, 512, TextureOptions.BILINEAR);
+            		mBitmapTextureAtlasDogSheet= new BitmapTextureAtlas(this.getTextureManager(), 1024, 2048, TextureOptions.BILINEAR);
+            		mBitmapTextureAtlasTugSheet= new BitmapTextureAtlas(this.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+            		mBitmapTextureAtlasWalls= new BitmapTextureAtlas(this.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+            		mBitmapTextureAtlasUI= new BitmapTextureAtlas(this.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
+            		
+            		
+            		pooBag = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "pooBag.png", 185, 315); 		//100 x 102
+                    actPoo = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actPoo.png", 290, 315); 		//53  x 88
+                    slider = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "slider.png", 0, 0); 			//179 x 480 
+                    sliderPull = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "sliderPull.png", 350, 315); //42  x 123
+                    actFetch = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actFetch.png", 550, 0); 	//82  x 84
+                    actTug = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actTug.png", 550, 90); 		//86  x 67
+                    actFood = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actFood.png", 550, 160); 		//86  x 54
+                    actWater = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "actWater.png", 550, 220); 	//86  x 50
+                    ropeTex = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "rope60.png", 185, 0); 		//360 x 312
+                    
+                    ropeTex2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "rope.png", 145, 0); 				//360 x 312
+                    cloudImage1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud1.png", 0, 0); 			//139 x 78
+                    cloudImage2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud2.png", 0, 80); 			//123 x 78
+                    cloudImage3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud3.png", 0, 160); 			//135 x 86
+                    cloudImage4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud4.png", 0, 250); 			//138 x 74
+                    cloudImage5 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "cloud5.png", 0, 330); 			//152 x 100
+                    pooImage1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "actPoo1.png", 0, 435); 			//50  x 51
+                    pooImage2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "actPoo2.png", 55, 435); 			//50  x 51
+                    soundOn = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "soundOn.png", 110, 435); 			//50  x 50
+                    soundOff = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "soundOff.png", 175, 435); 			//50  x 50
+                    shadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasUI, this, "ballShadow.png", 230, 315); 			//82  x 84
+            		
+                    
+                    splash = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasWalls, this, "phone buddy.png", 0, 0); 			//800 x 480
+            		field = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasWalls, this, "field.png", 0, 485); 				//800 x 480
+            		
+            		
+            		dogContainer  = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlasDogSheet, this, "dogSheet.png", 0, 0, 4, 6); 	//800 x 1200
+                    tugContainer  = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlasTugSheet, this, "tugSheet.png", 0, 0, 4, 5);	//800 x 1000
+                    
+                    
                         
                         
                         s_field = new Sprite(0, 0, field, VBOM);
