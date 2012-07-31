@@ -105,6 +105,7 @@ public class Game1 extends SimpleBaseGameActivity implements IOnSceneTouchListen
         public static Sound ithud;
         public static Sound ibag;
         
+        
         public static SoundManager soundManager;
         public static MusicManager musicManager;
         
@@ -165,11 +166,11 @@ public class Game1 extends SimpleBaseGameActivity implements IOnSceneTouchListen
                 	SoundFactory.setAssetBasePath("sfx/");
                 	MusicFactory.setAssetBasePath("sfx/");
                 	
-                	mBitmapTextureAtlasActivites= new BitmapTextureAtlas(this.getTextureManager(), 1024, 512, TextureOptions.BILINEAR);
-            		mBitmapTextureAtlasDogSheet= new BitmapTextureAtlas(this.getTextureManager(), 1024, 2048, TextureOptions.BILINEAR);
-            		mBitmapTextureAtlasTugSheet= new BitmapTextureAtlas(this.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
-            		mBitmapTextureAtlasWalls= new BitmapTextureAtlas(this.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
-            		mBitmapTextureAtlasUI= new BitmapTextureAtlas(this.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
+                	mBitmapTextureAtlasActivites= new BitmapTextureAtlas(this.getTextureManager(), 1024, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
+            		mBitmapTextureAtlasDogSheet= new BitmapTextureAtlas(this.getTextureManager(), 1024, 2048, TextureOptions.NEAREST_PREMULTIPLYALPHA);
+            		mBitmapTextureAtlasTugSheet= new BitmapTextureAtlas(this.getTextureManager(), 1024, 1024, TextureOptions.NEAREST_PREMULTIPLYALPHA);
+            		mBitmapTextureAtlasWalls= new BitmapTextureAtlas(this.getTextureManager(), 1024, 1024, TextureOptions.NEAREST_PREMULTIPLYALPHA);
+            		mBitmapTextureAtlasUI= new BitmapTextureAtlas(this.getTextureManager(), 512, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
             		
             		
             		pooBag = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlasActivites, this, "pooBag.png", 185, 315); 		//100 x 102
@@ -205,9 +206,9 @@ public class Game1 extends SimpleBaseGameActivity implements IOnSceneTouchListen
                     
                         
                         
-                        s_field = new Sprite(0, 0, field, VBOM);
+                        s_field = new Sprite(0, 0, screenWidth, screenHeight, field, VBOM);
                         s_pooBag = new Sprite(screenWidth * .8f, screenHeight * .75f, pooBag, VBOM );
-                		s_splash = new Sprite(0, 0, splash, VBOM);
+                		s_splash = new Sprite(0, 0, screenWidth, screenHeight, splash, VBOM);
                 		s_soundOn = new Sprite(screenWidth - 50, 0, soundOn, VBOM);
                 		s_soundOff = new Sprite(screenWidth - 50, 0, soundOff, VBOM);
                 		
@@ -309,8 +310,6 @@ public class Game1 extends SimpleBaseGameActivity implements IOnSceneTouchListen
                 		mScene.attachChild(s_soundOn);
                 		mScene.attachChild(s_soundOff);
                 		
-                		
-                        
                         soundRec = new Rectangle(screenWidth - 50, 0, 50, 50, VBOM);
                         
                         pooList = new ArrayList<Poo>();

@@ -43,7 +43,7 @@ import android.util.Log;
             this.slideLeft = false;
             
             
-            s_slider = new Sprite(0, 0, Game1.slider, Game1.VBOM);
+            s_slider = new Sprite(0, 0,(int)((float)Game1.screenWidth * .22), Game1.screenHeight, Game1.slider, Game1.VBOM);
             s_sliderPull = new Sprite(0, 0, Game1.sliderPull, Game1.VBOM);
             s_actFetch = new Sprite(0, 0, Game1.actFetch, Game1.VBOM);
             s_actTug = new Sprite(0, 0, Game1.actTug, Game1.VBOM);
@@ -68,8 +68,8 @@ import android.util.Log;
             Game1.mScene.attachChild(s_actWater);
             Game1.mScene.attachChild(s_actPoo);
             
-            this.recSlider = new Rectangle(sliderXloc, 0, s_slider.getWidth(), s_slider.getHeight(), Game1.VBOM);
-            this.recSliderPull = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .22), (int)((float)Game1.screenHeight * .36), s_sliderPull.getWidth(), s_sliderPull.getHeight(), Game1.VBOM);
+            this.recSlider = new Rectangle(sliderXloc, 0, sliderXloc + (int)((float)Game1.screenWidth * .22), Game1.screenHeight, Game1.VBOM);
+            this.recSliderPull = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .22) - 3, (int)((float)Game1.screenHeight * .36), s_sliderPull.getWidth(), s_sliderPull.getHeight(), Game1.VBOM);
             this.recFetch = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .04), s_actFetch.getWidth(), s_actFetch.getHeight(), Game1.VBOM);
             this.recTug = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .24), s_actTug.getWidth(), s_actTug.getHeight(), Game1.VBOM);
             this.recFood = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .43), s_actFood.getWidth(), s_actFood.getHeight(), Game1.VBOM);
@@ -149,8 +149,8 @@ import android.util.Log;
 
             
 
-            this.recSlider = new Rectangle(sliderXloc, 0, s_slider.getWidth(), s_slider.getHeight(), Game1.VBOM);
-            this.recSliderPull = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .22), (int)((float)Game1.screenHeight * .36), s_sliderPull.getWidth(), s_sliderPull.getHeight(), Game1.VBOM);
+            this.recSlider = new Rectangle(sliderXloc, 0, sliderXloc + (int)((float)Game1.screenWidth * .22), Game1.screenHeight, Game1.VBOM);
+            this.recSliderPull = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .22) - 3, (int)((float)Game1.screenHeight * .36), s_sliderPull.getWidth(), s_sliderPull.getHeight(), Game1.VBOM);
             this.recFetch = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .04), s_actFetch.getWidth(), s_actFetch.getHeight(), Game1.VBOM);
             this.recTug = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .24), s_actTug.getWidth(), s_actTug.getHeight(), Game1.VBOM);
             this.recFood = new Rectangle(sliderXloc + (int)((float)Game1.screenWidth * .075), (int)((float)Game1.screenHeight * .43), s_actFood.getWidth(), s_actFood.getHeight(), Game1.VBOM);
